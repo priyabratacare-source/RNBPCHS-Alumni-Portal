@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RNBPCHS Alumni Portal | Unofficial · Made by Batch 2026</title>
-    <meta name="description" content="Unofficial alumni portal for Ramnagar N.B.P.C. High School, built by HS Batch 2026 pass-outs. Reconnect with classmates, browse the alumni directory, and stay in touch.">
+    <title>RNBPCHS Portal | Unofficial · Made by Batch 2026</title>
+    <meta name="description" content="Unofficial alumni portal built by HS Batch 2026 pass-outs. Reconnect with classmates, browse the alumni directory, and stay in touch.">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -557,7 +557,7 @@
 <!-- ============ HEADER ============ -->
 <header id="siteHeader">
     <div class="brand">
-        <h1>RNBPCHS Alumni Portal</h1>
+        <h1>RNBPCHS Portal</h1>
         <span>Unofficial · Made by Batch 2026</span>
     </div>
     <nav>
@@ -570,18 +570,18 @@
 
 <!-- ============ UNOFFICIAL NOTICE ============ -->
 <div class="notice-bar">
-    ⚠️ <strong>Unofficial Portal:</strong> This is a student-made alumni network. It is not affiliated with or endorsed by Ramnagar N.B.P.C. High School or its management.
+    ⚠️ <strong>Unofficial Portal:</strong> This is a student-made alumni network. It is not affiliated with or endorsed by any school authority.
 </div>
 
 <!-- ============ HERO ============ -->
 <section class="hero">
     <div class="hero-content">
         <div class="badge-top">🎓 An Unofficial Alumni Network · Built by Batch 2026</div>
-        <h1>Welcome Back to<br><span class="highlight">Ramnagar N.B.P.C. High School</span></h1>
+        <h1>Welcome Back to<br><span class="highlight">RNBPCHS Portal</span></h1>
         <p class="lead">
-            A community project made by the HS Batch 2026 pass-outs — for every alumnus of our school.
-            Reconnect with old friends, browse the alumni directory, and stay part of the
-            memories that shaped us.
+            A community project made by the HS Batch 2026 pass-outs — for every alumnus.
+            Reconnect with old friends, browse the alumni directory, and stay part of
+            the memories that shaped us.
         </p>
         <div class="cta-buttons">
             <a href="register.html" class="primary">Join the Network →</a>
@@ -610,7 +610,7 @@
     <div class="section-inner">
         <div class="section-title reveal">
             <h2>Everything You Need, In One Place</h2>
-            <p>A clean, fast, and privacy-first alumni portal — designed by students, for students and alumni of our school.</p>
+            <p>A clean, fast, and privacy-first alumni portal — designed by students, for students and alumni.</p>
         </div>
 
         <div class="features-grid">
@@ -732,12 +732,12 @@
             <div class="icon">📢</div>
             <h2>This Is an Unofficial Student Project</h2>
             <p>
-                This alumni portal is <strong>not an official website</strong> of Ramnagar N.B.P.C. High School.
+                <strong>RNBPCHS Portal</strong> is <strong>not an official website</strong> of any school.
                 It is a <strong>voluntary, non-commercial project</strong> created by the HS Batch 2026 pass-outs
                 to help alumni reconnect with each other.
             </p>
             <p>
-                It is not affiliated with, endorsed by, or managed by the school authorities.
+                It is not affiliated with, endorsed by, or managed by any school authority.
                 Any data you submit is stored securely and used only for the purpose of this alumni network.
                 For official school matters, please contact the school directly.
             </p>
@@ -751,7 +751,7 @@
 <!-- ============ CTA BANNER ============ -->
 <section class="cta-banner">
     <h2>Ready to Reconnect?</h2>
-    <p>Join the growing alumni community from our school. Your classmates are already waiting.</p>
+    <p>Join the growing alumni community. Your classmates are already waiting.</p>
     <a href="register.html">Create Your Account →</a>
 </section>
 
@@ -759,10 +759,9 @@
 <footer>
     <div class="footer-inner">
         <div class="footer-col">
-            <h4>RNBPCHS Alumni Portal</h4>
+            <h4>RNBPCHS Portal</h4>
             <p>
-                An <strong>unofficial alumni network</strong> for Ramnagar N.B.P.C. High School.
-                Built with love by students of HS Batch 2026.
+                An <strong>unofficial alumni network</strong> built with love by students of HS Batch 2026.
             </p>
         </div>
 
@@ -776,9 +775,8 @@
         </div>
 
         <div class="footer-col">
-            <h4>School</h4>
+            <h4>Info</h4>
             <ul>
-                <li><a href="#" onclick="return false;">Ramnagar N.B.P.C. High School</a></li>
                 <li><a href="#" onclick="return false;">West Bengal, India</a></li>
                 <li><a href="#disclaimer">Disclaimer</a></li>
             </ul>
@@ -795,7 +793,7 @@
     </div>
 
     <div class="footer-bottom">
-        &copy; <span id="year"></span> RNBPCHS Alumni Portal · <strong>Unofficial</strong> · Made by HS Batch 2026 Pass-outs
+        &copy; <span id="year"></span> RNBPCHS Portal · <strong>Unofficial</strong> · Made by HS Batch 2026 Pass-outs
     </div>
 </footer>
 
@@ -833,7 +831,6 @@
         document.getElementById("statTotal").textContent = total > 0 ? total + "+" : "100+";
         document.getElementById("statBatches").textContent = batches.size > 0 ? batches.size : "10+";
     } catch (err) {
-        // Fallback placeholders if public reads are blocked
         console.warn("Live stats unavailable, showing placeholders:", err.code || err.message);
         document.getElementById("statTotal").textContent = "100+";
         document.getElementById("statBatches").textContent = "10+";
@@ -858,7 +855,6 @@
         });
         revealElements.forEach(el => revealObserver.observe(el));
     } else {
-        // Fallback for old browsers
         revealElements.forEach(el => el.classList.add("visible"));
     }
 
