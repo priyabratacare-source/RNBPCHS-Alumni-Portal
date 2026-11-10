@@ -45,7 +45,6 @@
         .page-title h2 { margin-bottom: 8px; }
         .page-title p { color: #777; font-size: 14px; }
 
-        /* Welcome banner */
         .welcome-banner {
             background: #e3f2fd;
             border: 1px solid #bbdefb;
@@ -57,10 +56,7 @@
             line-height: 1.5;
         }
         .welcome-banner strong { font-size: 15px; }
-        .welcome-banner ul {
-            margin: 8px 0 0;
-            padding-left: 20px;
-        }
+        .welcome-banner ul { margin: 8px 0 0; padding-left: 20px; }
         .welcome-banner li { margin-bottom: 4px; }
 
         form {
@@ -157,6 +153,65 @@
             color: #795548;
             margin-top: 6px;
         }
+
+        /* Success screen */
+        .success-screen {
+            display: none;
+            text-align: center;
+            padding: 30px 20px;
+        }
+        .success-screen.active { display: block; }
+        .success-screen .check-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #e8f5e9;
+            border: 3px solid #43a047;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 40px;
+            color: #43a047;
+        }
+        .success-screen h2 {
+            margin: 0 0 10px;
+            color: #1b5e20;
+            font-size: 24px;
+        }
+        .success-screen p {
+            color: #666;
+            font-size: 15px;
+            line-height: 1.6;
+            margin: 0 0 8px;
+        }
+        .success-screen .detail {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 14px 18px;
+            margin: 20px auto;
+            max-width: 420px;
+            text-align: left;
+            font-size: 14px;
+        }
+        .success-screen .detail div { margin-bottom: 6px; }
+        .success-screen .detail div:last-child { margin-bottom: 0; }
+        .success-screen .detail span { color: #888; font-size: 12px; display: block; }
+        .success-screen .detail strong { color: #333; }
+        .success-screen .login-btn {
+            display: inline-block;
+            padding: 13px 40px;
+            background: #244f85;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .success-screen .login-btn:hover { background: #17395f; }
+
         @media(max-width: 750px) {
             .container { width: calc(100% - 24px); padding: 18px; }
             form { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; }
@@ -180,214 +235,238 @@
 </header>
 
 <div class="container">
-    <div class="page-title">
-        <h2>Alumni Registration</h2>
-        <p>Join the RNBPCHS Alumni Community</p>
+
+    <!-- ==================== REGISTRATION VIEW ==================== -->
+    <div id="registrationView">
+        <div class="page-title">
+            <h2>Alumni Registration</h2>
+            <p>Join the RNBPCHS Alumni Community</p>
+        </div>
+
+        <div class="welcome-banner">
+            <strong>Welcome back, student! 👋</strong><br>
+            You're one step away from joining the RNBPCHS Alumni network. Here's what you should know:
+            <ul>
+                <li><strong>School Name</strong> is fixed to <em>Ramnagar N.B.P.C. High School</em> — you cannot change it.</li>
+                <li><strong>School Student ID</strong> is optional — fill it if you remember it.</li>
+                <li><strong>Profile Photo</strong> is optional. You can paste a hosted image link instead of uploading.</li>
+                <li><strong>Only your Batch Year is shown publicly</strong> in the internal system. All other details stay secure.</li>
+                <li><strong>Email & Mobile Number must be unique</strong> — no duplicate registrations allowed.</li>
+            </ul>
+        </div>
+
+        <form id="registrationForm" novalidate>
+            <div id="formMessage" class="message"></div>
+
+            <!-- 1. Personal Information -->
+            <h3>1. Personal Information</h3>
+            <div>
+                <label>Full Name *</label>
+                <input type="text" id="name" required autocomplete="name">
+            </div>
+            <div>
+                <label>Father's Name</label>
+                <input type="text" id="father">
+            </div>
+            <div>
+                <label>Mother's Name</label>
+                <input type="text" id="mother">
+            </div>
+            <div>
+                <label>Date of Birth *</label>
+                <input type="date" id="dob" required>
+            </div>
+            <div>
+                <label>Gender</label>
+                <select id="gender">
+                    <option value="">Select Gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+                    <option>Prefer not to say</option>
+                </select>
+            </div>
+            <div>
+                <label>Profile Photo (optional)</label>
+                <input type="file" id="photo" accept="image/*">
+                <small class="hint">Upload a photo OR paste a hosted image link below.</small>
+            </div>
+            <div class="full">
+                <label>Profile Photo Hosted Link (optional)</label>
+                <input type="url" id="photoUrl" placeholder="https://example.com/photo.jpg">
+                <small class="hint">Paste a direct image URL (e.g. from Google Drive, Imgur, etc.). Not mandatory.</small>
+            </div>
+
+            <!-- 2. School Information -->
+            <h3>2. School Information</h3>
+            <div class="full">
+                <label>School Name</label>
+                <input type="text" value="Ramnagar N.B.P.C. High School" readonly>
+                <small class="hint">Fixed — this cannot be changed.</small>
+            </div>
+            <div>
+                <label>School Student ID (optional)</label>
+                <input type="text" id="studentId" placeholder="Enter only if you remember it">
+                <small class="hint">Not mandatory — leave blank if you don't remember.</small>
+            </div>
+            <div>
+                <label>Passing Year / Batch *</label>
+                <select id="batch" required>
+                    <option value="">Select Batch</option>
+                </select>
+                <small class="hint">This is the only school detail shown publicly in the internal system.</small>
+            </div>
+            <div>
+                <label>Last Studied Class *</label>
+                <select id="class" required>
+                    <option value="">Select Class</option>
+                    <option>Class 10</option>
+                    <option>Class 11</option>
+                    <option>Class 12</option>
+                </select>
+            </div>
+            <div>
+                <label>School Roll Number</label>
+                <input type="text" id="roll">
+            </div>
+            <div>
+                <label>Registration Number</label>
+                <input type="text" id="schoolReg">
+            </div>
+            <div>
+                <label>Section</label>
+                <input type="text" id="section">
+            </div>
+
+            <div class="privacy-note">
+                <strong>🔒 Privacy notice:</strong> Only your <strong>Batch Year</strong> is visible publicly in the internal system.
+                Your name, contact details, and all other information remain secure and are only used for alumni records.
+            </div>
+
+            <!-- 3. Contact Information -->
+            <h3>3. Contact Information</h3>
+            <div>
+                <label>Email Address *</label>
+                <input type="email" id="email" required autocomplete="email">
+                <small class="hint">Must be unique — used for login.</small>
+            </div>
+            <div>
+                <label>Mobile Number *</label>
+                <input type="tel" id="phone" maxlength="10" pattern="[0-9]{10}" required autocomplete="tel">
+                <small class="hint">Must be unique — 10 digits.</small>
+            </div>
+            <div>
+                <label>Alternative Mobile Number</label>
+                <input type="tel" id="altPhone" maxlength="10">
+            </div>
+            <div class="full">
+                <label>Current Address</label>
+                <textarea id="address" rows="3"></textarea>
+            </div>
+            <div>
+                <label>City / Town</label>
+                <input type="text" id="city">
+            </div>
+            <div>
+                <label>District</label>
+                <input type="text" id="district">
+            </div>
+            <div>
+                <label>State</label>
+                <input type="text" id="state">
+            </div>
+            <div>
+                <label>PIN Code</label>
+                <input type="text" id="pin" maxlength="6">
+            </div>
+
+            <!-- 4. Education and Profession -->
+            <h3>4. Current Education & Profession</h3>
+            <div>
+                <label>Current Status</label>
+                <select id="status">
+                    <option value="">Select Status</option>
+                    <option>School Student</option>
+                    <option>College Student</option>
+                    <option>University Student</option>
+                    <option>Working Professional</option>
+                    <option>Business Owner</option>
+                    <option>Self Employed</option>
+                    <option>Preparing for Competitive Exams</option>
+                    <option>Other</option>
+                </select>
+            </div>
+            <div>
+                <label>College / Company Name</label>
+                <input type="text" id="institution">
+            </div>
+            <div>
+                <label>Course / Stream / Profession</label>
+                <input type="text" id="profession">
+            </div>
+            <div class="full">
+                <label>Current Location</label>
+                <input type="text" id="location">
+            </div>
+
+            <!-- 5. Social Information -->
+            <h3>5. Social Information</h3>
+            <div>
+                <label>LinkedIn Profile</label>
+                <input type="url" id="linkedin" placeholder="https://linkedin.com/in/...">
+            </div>
+            <div>
+                <label>Personal Website</label>
+                <input type="url" id="website" placeholder="https://example.com">
+            </div>
+            <div class="full">
+                <label>About Yourself</label>
+                <textarea id="about" rows="4" placeholder="Write something about yourself..."></textarea>
+            </div>
+
+            <!-- 6. Account Security -->
+            <h3>6. Account Security</h3>
+            <div>
+                <label>Create Password *</label>
+                <input type="password" id="password" minlength="8" required autocomplete="new-password">
+            </div>
+            <div>
+                <label>Confirm Password *</label>
+                <input type="password" id="confirmPassword" required autocomplete="new-password">
+            </div>
+
+            <!-- Terms -->
+            <label class="terms">
+                <input type="checkbox" id="terms" required>
+                I confirm that the information provided is correct.
+            </label>
+
+            <button type="submit" id="submitBtn">Submit Registration</button>
+        </form>
+
+        <div class="login">
+            Already registered? <a href="login.html">Login Here</a>
+        </div>
     </div>
 
-    <!-- Welcome / Info Banner -->
-    <div class="welcome-banner">
-        <strong>Welcome back, student! 👋</strong><br>
-        You're one step away from joining the RNBPCHS Alumni network. Here's what you should know:
-        <ul>
-            <li><strong>School Name</strong> is fixed to <em>Ramnagar N.B.P.C. High School</em> — you cannot change it.</li>
-            <li><strong>School Student ID</strong> is optional — fill it if you remember it.</li>
-            <li><strong>Profile Photo</strong> is optional. You can paste a hosted image link instead of uploading.</li>
-            <li><strong>Only your Batch Year is shown publicly</strong> in the internal system. All other details stay secure.</li>
-        </ul>
+    <!-- ==================== SUCCESS VIEW ==================== -->
+    <div class="success-screen" id="successScreen">
+        <div class="check-circle">✓</div>
+        <h2>Registration Successful!</h2>
+        <p>Welcome to the RNBPCHS Alumni Community 🎉</p>
+        <p>Your account has been created successfully.</p>
+
+        <div class="detail" id="successDetail">
+            <!-- filled by JS -->
+        </div>
+
+        <p style="font-size:13px;color:#888;margin-top:14px;">
+            You can now log in using your email and password.
+        </p>
+
+        <a href="login.html" class="login-btn">Go to Login →</a>
     </div>
 
-    <form id="registrationForm" novalidate>
-        <div id="formMessage" class="message"></div>
-
-        <!-- 1. Personal Information -->
-        <h3>1. Personal Information</h3>
-        <div>
-            <label>Full Name *</label>
-            <input type="text" id="name" required autocomplete="name">
-        </div>
-        <div>
-            <label>Father's Name</label>
-            <input type="text" id="father">
-        </div>
-        <div>
-            <label>Mother's Name</label>
-            <input type="text" id="mother">
-        </div>
-        <div>
-            <label>Date of Birth *</label>
-            <input type="date" id="dob" required>
-        </div>
-        <div>
-            <label>Gender</label>
-            <select id="gender">
-                <option value="">Select Gender</option>
-                <option>Male</option>
-                <option>Female</option>
-                <option>Other</option>
-                <option>Prefer not to say</option>
-            </select>
-        </div>
-        <div>
-            <label>Profile Photo (optional)</label>
-            <input type="file" id="photo" accept="image/*">
-            <small class="hint">Upload a photo OR paste a hosted image link below.</small>
-        </div>
-        <div class="full">
-            <label>Profile Photo Hosted Link (optional)</label>
-            <input type="url" id="photoUrl" placeholder="https://example.com/photo.jpg">
-            <small class="hint">Paste a direct image URL (e.g. from Google Drive, Imgur, etc.). Not mandatory.</small>
-        </div>
-
-        <!-- 2. School Information -->
-        <h3>2. School Information</h3>
-        <div class="full">
-            <label>School Name</label>
-            <input type="text" value="Ramnagar N.B.P.C. High School" readonly>
-            <small class="hint">Fixed — this cannot be changed.</small>
-        </div>
-        <div>
-            <label>School Student ID (optional)</label>
-            <input type="text" id="studentId" placeholder="Enter only if you remember it">
-            <small class="hint">Not mandatory — leave blank if you don't remember.</small>
-        </div>
-        <div>
-            <label>Passing Year / Batch *</label>
-            <select id="batch" required>
-                <option value="">Select Batch</option>
-            </select>
-            <small class="hint">This is the only school detail shown publicly in the internal system.</small>
-        </div>
-        <div>
-            <label>Last Studied Class *</label>
-            <select id="class" required>
-                <option value="">Select Class</option>
-                <option>Class 10</option>
-                <option>Class 11</option>
-                <option>Class 12</option>
-            </select>
-        </div>
-        <div>
-            <label>School Roll Number</label>
-            <input type="text" id="roll">
-        </div>
-        <div>
-            <label>Registration Number</label>
-            <input type="text" id="schoolReg">
-        </div>
-        <div>
-            <label>Section</label>
-            <input type="text" id="section">
-        </div>
-
-        <!-- Privacy note -->
-        <div class="privacy-note">
-            <strong>🔒 Privacy notice:</strong> Only your <strong>Batch Year</strong> is visible publicly in the internal system.
-            Your name, contact details, and all other information remain secure and are only used for alumni records.
-        </div>
-
-        <!-- 3. Contact Information -->
-        <h3>3. Contact Information</h3>
-        <div>
-            <label>Email Address *</label>
-            <input type="email" id="email" required autocomplete="email">
-        </div>
-        <div>
-            <label>Mobile Number *</label>
-            <input type="tel" id="phone" maxlength="10" pattern="[0-9]{10}" required autocomplete="tel">
-        </div>
-        <div>
-            <label>Alternative Mobile Number</label>
-            <input type="tel" id="altPhone" maxlength="10">
-        </div>
-        <div class="full">
-            <label>Current Address</label>
-            <textarea id="address" rows="3"></textarea>
-        </div>
-        <div>
-            <label>City / Town</label>
-            <input type="text" id="city">
-        </div>
-        <div>
-            <label>District</label>
-            <input type="text" id="district">
-        </div>
-        <div>
-            <label>State</label>
-            <input type="text" id="state">
-        </div>
-        <div>
-            <label>PIN Code</label>
-            <input type="text" id="pin" maxlength="6">
-        </div>
-
-        <!-- 4. Education and Profession -->
-        <h3>4. Current Education & Profession</h3>
-        <div>
-            <label>Current Status</label>
-            <select id="status">
-                <option value="">Select Status</option>
-                <option>School Student</option>
-                <option>College Student</option>
-                <option>University Student</option>
-                <option>Working Professional</option>
-                <option>Business Owner</option>
-                <option>Self Employed</option>
-                <option>Preparing for Competitive Exams</option>
-                <option>Other</option>
-            </select>
-        </div>
-        <div>
-            <label>College / Company Name</label>
-            <input type="text" id="institution">
-        </div>
-        <div>
-            <label>Course / Stream / Profession</label>
-            <input type="text" id="profession">
-        </div>
-        <div class="full">
-            <label>Current Location</label>
-            <input type="text" id="location">
-        </div>
-
-        <!-- 5. Social Information -->
-        <h3>5. Social Information</h3>
-        <div>
-            <label>LinkedIn Profile</label>
-            <input type="url" id="linkedin" placeholder="https://linkedin.com/in/...">
-        </div>
-        <div>
-            <label>Personal Website</label>
-            <input type="url" id="website" placeholder="https://example.com">
-        </div>
-        <div class="full">
-            <label>About Yourself</label>
-            <textarea id="about" rows="4" placeholder="Write something about yourself..."></textarea>
-        </div>
-
-        <!-- 6. Account Security -->
-        <h3>6. Account Security</h3>
-        <div>
-            <label>Create Password *</label>
-            <input type="password" id="password" minlength="8" required autocomplete="new-password">
-        </div>
-        <div>
-            <label>Confirm Password *</label>
-            <input type="password" id="confirmPassword" required autocomplete="new-password">
-        </div>
-
-        <!-- Terms -->
-        <label class="terms">
-            <input type="checkbox" id="terms" required>
-            I confirm that the information provided is correct.
-        </label>
-
-        <button type="submit" id="submitBtn">Submit Registration</button>
-    </form>
-
-    <div class="login">
-        Already registered? <a href="login.html">Login Here</a>
-    </div>
 </div>
 
 <footer>
@@ -397,10 +476,18 @@
 
 <!-- Firebase SDK (v9+ modular via CDN) -->
 <script type="module">
-    // Import Firebase modules
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import {
+        getFirestore,
+        doc,
+        setDoc,
+        serverTimestamp,
+        collection,
+        query,
+        where,
+        getDocs
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
     // Firebase configuration
@@ -413,13 +500,12 @@
         appId: "1:187797438854:web:e6e564e04aea3129fa6c07"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
     const storage = getStorage(app);
 
-    // Generate Batch Years
+    // Batch years
     const batchSelect = document.getElementById("batch");
     for (let year = 2018; year <= 2030; year++) {
         const option = document.createElement("option");
@@ -428,7 +514,7 @@
         batchSelect.appendChild(option);
     }
 
-    // Helper to show messages
+    // Message helper
     const msgEl = document.getElementById("formMessage");
     function showMessage(text, type) {
         msgEl.textContent = text;
@@ -436,7 +522,22 @@
         if (window.innerWidth < 600) msgEl.scrollIntoView({ behavior: "smooth", block: "center" });
     }
 
-    // Form submission
+    // ============ DUPLICATE CHECK HELPERS ============
+    // Returns true if email already exists in the "alumni" collection
+    async function emailExists(email) {
+        const q = query(collection(db, "alumni"), where("email", "==", email));
+        const snap = await getDocs(q);
+        return !snap.empty;
+    }
+
+    // Returns true if phone already exists in the "alumni" collection
+    async function phoneExists(phone) {
+        const q = query(collection(db, "alumni"), where("phone", "==", phone));
+        const snap = await getDocs(q);
+        return !snap.empty;
+    }
+
+    // ============ FORM SUBMIT ============
     const form = document.getElementById("registrationForm");
     const submitBtn = document.getElementById("submitBtn");
 
@@ -462,7 +563,7 @@
         const schoolReg = document.getElementById("schoolReg").value.trim();
         const section = document.getElementById("section").value.trim();
 
-        const email = document.getElementById("email").value.trim();
+        const email = document.getElementById("email").value.trim().toLowerCase();
         const phone = document.getElementById("phone").value.trim();
         const altPhone = document.getElementById("altPhone").value.trim();
         const address = document.getElementById("address").value.trim();
@@ -484,74 +585,68 @@
         const confirmPassword = document.getElementById("confirmPassword").value;
         const termsChecked = document.getElementById("terms").checked;
 
-        // --- Validation ---
-        if (!fullName) {
-            showMessage("Full name is required.", "error");
-            return;
-        }
-        if (!dob) {
-            showMessage("Date of birth is required.", "error");
-            return;
-        }
-        if (!batch) {
-            showMessage("Please select your passing year / batch.", "error");
-            return;
-        }
-        if (!lastClass) {
-            showMessage("Please select the last class studied.", "error");
-            return;
-        }
-        if (!email) {
-            showMessage("Email address is required.", "error");
-            return;
-        }
-        if (!/^\S+@\S+\.\S+$/.test(email)) {
-            showMessage("Please enter a valid email address.", "error");
-            return;
-        }
+        // ============ VALIDATION ============
+        if (!fullName) { showMessage("Full name is required.", "error"); return; }
+        if (!dob) { showMessage("Date of birth is required.", "error"); return; }
+        if (!batch) { showMessage("Please select your passing year / batch.", "error"); return; }
+        if (!lastClass) { showMessage("Please select the last class studied.", "error"); return; }
+        if (!email) { showMessage("Email address is required.", "error"); return; }
+        if (!/^\S+@\S+\.\S+$/.test(email)) { showMessage("Please enter a valid email address.", "error"); return; }
         if (!phone || phone.length !== 10 || !/^\d+$/.test(phone)) {
-            showMessage("Mobile number must be exactly 10 digits.", "error");
-            return;
+            showMessage("Mobile number must be exactly 10 digits.", "error"); return;
         }
         if (altPhone && (altPhone.length !== 10 || !/^\d+$/.test(altPhone))) {
-            showMessage("Alternative mobile number must be exactly 10 digits (or leave blank).", "error");
-            return;
+            showMessage("Alternative mobile number must be exactly 10 digits (or leave blank).", "error"); return;
         }
         if (pin && (pin.length !== 6 || !/^\d+$/.test(pin))) {
-            showMessage("PIN code must be exactly 6 digits (or leave blank).", "error");
-            return;
+            showMessage("PIN code must be exactly 6 digits (or leave blank).", "error"); return;
         }
-        // Validate hosted photo URL if provided
         if (photoHostedUrl && !/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|avif)(\?.*)?$/i.test(photoHostedUrl)) {
-            showMessage("Profile photo hosted link must be a valid image URL (jpg, png, gif, webp, avif).", "error");
-            return;
+            showMessage("Profile photo hosted link must be a valid image URL (jpg, png, gif, webp, avif).", "error"); return;
         }
-        if (password.length < 8) {
-            showMessage("Password must contain at least 8 characters.", "error");
-            return;
-        }
-        if (password !== confirmPassword) {
-            showMessage("Passwords do not match.", "error");
-            return;
-        }
+        if (password.length < 8) { showMessage("Password must contain at least 8 characters.", "error"); return; }
+        if (password !== confirmPassword) { showMessage("Passwords do not match.", "error"); return; }
         if (!termsChecked) {
-            showMessage("You must confirm that the information provided is correct.", "error");
-            return;
+            showMessage("You must confirm that the information provided is correct.", "error"); return;
         }
 
-        // --- Disable button during processing ---
+        // ============ DISABLE BUTTON ============
         submitBtn.disabled = true;
-        submitBtn.textContent = "Creating account...";
+        submitBtn.textContent = "Checking details...";
 
         try {
-            // 1. Create user in Firebase Authentication
+            // ---------- DUPLICATE EMAIL CHECK ----------
+            const emailTaken = await emailExists(email);
+            if (emailTaken) {
+                showMessage(
+                    "This email address is already registered. Please log in or use a different email.",
+                    "error"
+                );
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Submit Registration";
+                return;
+            }
+
+            // ---------- DUPLICATE MOBILE CHECK ----------
+            const phoneTaken = await phoneExists(phone);
+            if (phoneTaken) {
+                showMessage(
+                    "This mobile number is already registered. Please log in or use a different number.",
+                    "error"
+                );
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Submit Registration";
+                return;
+            }
+
+            submitBtn.textContent = "Creating account...";
+
+            // ---------- CREATE AUTH USER ----------
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            // 2. Determine profile photo URL
-            let photoURL = photoHostedUrl; // default to hosted link if provided
-
-            // If a file is uploaded, upload it and use that URL (file takes precedence over hosted link)
+            // ---------- PHOTO ----------
+            let photoURL = photoHostedUrl;
             if (photoFile) {
                 try {
                     const storageRef = ref(storage, `profile_photos/${user.uid}_${Date.now()}`);
@@ -559,32 +654,24 @@
                     photoURL = await getDownloadURL(snapshot.ref);
                 } catch (uploadErr) {
                     console.warn("Photo upload failed (non-critical):", uploadErr);
-                    // Fall back to hosted URL if upload fails
-                    if (!photoURL) {
-                        // both absent — fine, photoURL stays ""
-                    }
                 }
             }
 
-            // 3. Save user data to Firestore
-            // Only batch is marked public; everything else is stored securely.
+            // ---------- SAVE TO FIRESTORE ----------
             const userData = {
-                // Personal
                 fullName,
                 fatherName,
                 motherName,
                 dob,
                 gender,
-                photoURL, // may be "" if no photo
-                // School
-                schoolName: "Ramnagar N.B.P.C. High School", // fixed
-                studentId: studentId || null, // optional
-                batch, // ONLY PUBLIC FIELD
+                photoURL,
+                schoolName: "Ramnagar N.B.P.C. High School",
+                studentId: studentId || null,
+                batch,
                 lastClass,
                 roll,
                 schoolReg,
                 section,
-                // Contact
                 email,
                 phone,
                 altPhone,
@@ -593,38 +680,35 @@
                 district,
                 state,
                 pin,
-                // Education & Profession
                 currentStatus,
                 institution,
                 profession,
                 location,
-                // Social
                 linkedin,
                 website,
                 about,
-                // Meta
                 createdAt: serverTimestamp(),
                 uid: user.uid,
-                // Privacy flag
-                publicFields: ["batch"] // Only batch is visible publicly
+                publicFields: ["batch"]
             };
 
             await setDoc(doc(db, "alumni", user.uid), userData);
 
-            // 4. Sign out immediately after registration
+            // ---------- SIGN OUT ----------
             await signOut(auth);
 
-            // Success feedback
-            showMessage(
-                "Registration successful! Your account has been created. You can now log in.",
-                "success"
-            );
-            submitBtn.textContent = "Registered ✓";
+            // ---------- SHOW SUCCESS SCREEN ----------
+            document.getElementById("registrationView").style.display = "none";
+            document.getElementById("successScreen").classList.add("active");
 
-            // Redirect to login after a short delay
-            setTimeout(() => {
-                window.location.href = "login.html";
-            }, 2500);
+            document.getElementById("successDetail").innerHTML = `
+                <div><span>Name</span><strong>${escapeHtml(fullName)}</strong></div>
+                <div><span>Email</span><strong>${escapeHtml(email)}</strong></div>
+                <div><span>Mobile</span><strong>${escapeHtml(phone)}</strong></div>
+                <div><span>Batch Year</span><strong>${escapeHtml(batch)}</strong></div>
+            `;
+
+            window.scrollTo({ top: 0, behavior: "smooth" });
 
         } catch (error) {
             console.error("Registration error:", error);
@@ -657,6 +741,17 @@
             submitBtn.textContent = "Submit Registration";
         }
     });
+
+    // Escape helper for success detail
+    function escapeHtml(str) {
+        if (str === null || str === undefined) return "";
+        return String(str)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+    }
 </script>
 
 </body>
