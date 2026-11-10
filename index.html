@@ -3,16 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RNBPCHS Alumni Portal | Reconnect. Remember. Reunite.</title>
-    <meta name="description" content="Official alumni portal of Ramnagar N.B.P.C. High School. Reconnect with classmates, find old friends, and stay updated with the alumni community.">
+    <title>RNBPCHS Alumni Portal | Unofficial · Made by Batch 2026</title>
+    <meta name="description" content="Unofficial alumni portal for Ramnagar N.B.P.C. High School, built by HS Batch 2026 pass-outs. Reconnect with classmates, browse the alumni directory, and stay in touch.">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: Arial, sans-serif;
             color: #333;
             background: #f4f4f4;
             line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ============ SCROLL REVEAL ============ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                        transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: opacity, transform;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* ============ HEADER / NAV ============ */
@@ -29,6 +45,10 @@
             top: 0;
             z-index: 100;
             box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            transition: box-shadow 0.3s;
+        }
+        header.scrolled {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
         }
 
         header .brand {
@@ -36,12 +56,12 @@
             flex-direction: column;
         }
         header .brand h1 {
-            font-size: 20px;
+            font-size: 19px;
             margin: 0;
             letter-spacing: 0.3px;
         }
         header .brand span {
-            font-size: 11px;
+            font-size: 10px;
             color: #c5d9f0;
             margin-top: 2px;
         }
@@ -49,91 +69,98 @@
         header nav {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
         }
-
         header nav a {
             color: white;
             text-decoration: none;
             font-size: 14px;
-            padding: 9px 16px;
+            padding: 9px 15px;
             border-radius: 4px;
-            transition: background 0.15s;
+            transition: background 0.18s, transform 0.18s;
         }
         header nav a:hover { background: #ffffff1a; }
-
         header nav a.btn-primary {
             background: white;
             color: #244f85;
             font-weight: bold;
         }
-        header nav a.btn-primary:hover { background: #e0e9f5; }
+        header nav a.btn-primary:hover { background: #e0e9f5; transform: translateY(-1px); }
 
-        header nav a.btn-outline {
-            border: 1px solid #ffffff80;
+        /* ============ UNOFFICIAL NOTICE BAR ============ */
+        .notice-bar {
+            background: #fff8e1;
+            border-bottom: 1px solid #ffe082;
+            padding: 10px 24px;
+            text-align: center;
+            font-size: 13px;
+            color: #795548;
+            line-height: 1.5;
         }
+        .notice-bar strong { color: #e65100; }
 
         /* ============ HERO ============ */
         .hero {
             background: linear-gradient(135deg, #244f85 0%, #1a3a63 100%);
             color: white;
-            padding: 70px 24px 80px;
+            padding: 72px 24px 82px;
             text-align: center;
             position: relative;
             overflow: hidden;
         }
-
         .hero::before {
             content: "";
             position: absolute;
             top: -50%; left: -50%;
             width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
-            animation: pulse 8s ease-in-out infinite;
+            background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+            animation: pulse 9s ease-in-out infinite;
+            pointer-events: none;
         }
         @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.6; }
-            50% { transform: scale(1.1); opacity: 0.9; }
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.08); opacity: 0.9; }
         }
 
         .hero .hero-content {
             position: relative;
-            max-width: 780px;
+            max-width: 800px;
             margin: 0 auto;
             z-index: 1;
         }
 
         .hero .badge-top {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             background: #ffffff1a;
             border: 1px solid #ffffff33;
-            padding: 6px 16px;
+            padding: 7px 18px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: bold;
             letter-spacing: 0.5px;
             text-transform: uppercase;
-            margin-bottom: 22px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(4px);
         }
 
         .hero h1 {
-            font-size: 42px;
-            line-height: 1.2;
-            margin-bottom: 16px;
+            font-size: 44px;
+            line-height: 1.15;
+            margin-bottom: 18px;
             font-weight: bold;
+            letter-spacing: -0.5px;
         }
-
-        .hero h1 .highlight {
-            color: #ffd54f;
-        }
+        .hero h1 .highlight { color: #ffd54f; }
 
         .hero p.lead {
             font-size: 17px;
             color: #d8e4f3;
             line-height: 1.7;
             margin-bottom: 32px;
-            max-width: 640px;
+            max-width: 660px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -144,20 +171,18 @@
             justify-content: center;
             flex-wrap: wrap;
         }
-
         .hero .cta-buttons a {
             padding: 14px 34px;
             border-radius: 6px;
             font-size: 15px;
             font-weight: bold;
             text-decoration: none;
-            transition: transform 0.15s, box-shadow 0.15s;
+            transition: transform 0.18s, box-shadow 0.18s;
         }
         .hero .cta-buttons a:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.22);
         }
-
         .hero .cta-buttons a.primary {
             background: #ffd54f;
             color: #1a3a63;
@@ -167,61 +192,57 @@
             color: white;
             border: 2px solid #ffffff80;
         }
+        .hero .cta-buttons a.secondary:hover { background: #ffffff1a; }
 
         .hero .stats-bar {
             display: flex;
             justify-content: center;
-            gap: 40px;
-            margin-top: 48px;
+            gap: 44px;
+            margin-top: 52px;
             flex-wrap: wrap;
             position: relative;
             z-index: 1;
         }
-        .hero .stat {
-            text-align: center;
-        }
+        .hero .stat { text-align: center; }
         .hero .stat .num {
             font-size: 30px;
             font-weight: bold;
             color: #ffd54f;
             margin-bottom: 4px;
+            transition: transform 0.2s;
         }
+        .hero .stat:hover .num { transform: scale(1.08); }
         .hero .stat .lbl {
-            font-size: 12px;
+            font-size: 11px;
             color: #c5d9f0;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.6px;
         }
 
         /* ============ SECTION WRAPPER ============ */
-        section {
-            padding: 60px 24px;
-        }
-        .section-inner {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
+        section { padding: 64px 24px; }
+        .section-inner { max-width: 1100px; margin: 0 auto; }
 
         .section-title {
             text-align: center;
-            margin-bottom: 44px;
+            margin-bottom: 46px;
         }
         .section-title h2 {
             font-size: 30px;
             color: #244f85;
             margin-bottom: 10px;
+            letter-spacing: -0.3px;
         }
         .section-title p {
             color: #777;
             font-size: 15px;
-            max-width: 620px;
+            max-width: 640px;
             margin: 0 auto;
+            line-height: 1.65;
         }
 
         /* ============ FEATURES GRID ============ */
-        .features {
-            background: white;
-        }
+        .features { background: white; }
 
         .features-grid {
             display: grid;
@@ -232,26 +253,29 @@
         .feature-card {
             background: #fafcff;
             border: 1px solid #e0e8f5;
-            border-radius: 8px;
+            border-radius: 10px;
             padding: 26px 22px;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+                        box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1);
         }
         .feature-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 30px rgba(36, 79, 133, 0.12);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 32px rgba(36, 79, 133, 0.14);
         }
 
         .feature-card .icon {
-            width: 52px;
-            height: 52px;
-            border-radius: 12px;
+            width: 54px;
+            height: 54px;
+            border-radius: 13px;
             background: #e3f2fd;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px;
+            font-size: 27px;
             margin-bottom: 16px;
+            transition: transform 0.2s;
         }
+        .feature-card:hover .icon { transform: scale(1.08) rotate(-3deg); }
 
         .feature-card h3 {
             font-size: 17px;
@@ -265,33 +289,34 @@
         }
 
         /* ============ HOW IT WORKS ============ */
-        .how-it-works {
-            background: #f4f4f4;
-        }
+        .how-it-works { background: #f4f4f4; }
 
         .steps {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 22px;
             counter-reset: step;
         }
-
         .step {
             background: white;
             border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 26px 22px;
+            border-radius: 10px;
+            padding: 28px 22px;
             position: relative;
+            transition: transform 0.25s, box-shadow 0.25s;
         }
-
+        .step:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 28px rgba(0,0,0,0.08);
+        }
         .step::before {
             counter-increment: step;
             content: counter(step);
             position: absolute;
             top: -18px;
             left: 22px;
-            width: 36px;
-            height: 36px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             background: #244f85;
             color: white;
@@ -300,13 +325,12 @@
             justify-content: center;
             font-weight: bold;
             font-size: 16px;
-            box-shadow: 0 3px 10px rgba(36, 79, 133, 0.3);
+            box-shadow: 0 3px 12px rgba(36, 79, 133, 0.35);
         }
-
         .step h3 {
             font-size: 16px;
             color: #244f85;
-            margin: 12px 0 8px;
+            margin: 14px 0 8px;
         }
         .step p {
             font-size: 14px;
@@ -314,23 +338,22 @@
             line-height: 1.6;
         }
 
-        /* ============ PRIVACY SECTION ============ */
-        .privacy {
-            background: white;
-        }
+        /* ============ PRIVACY ============ */
+        .privacy { background: white; }
 
         .privacy-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 20px;
         }
-
         .privacy-item {
             padding: 20px;
             border-left: 4px solid #43a047;
             background: #f8fdf9;
             border-radius: 0 8px 8px 0;
+            transition: transform 0.2s;
         }
+        .privacy-item:hover { transform: translateX(3px); }
         .privacy-item h4 {
             font-size: 15px;
             color: #1b5e20;
@@ -339,58 +362,91 @@
         .privacy-item p {
             font-size: 13px;
             color: #555;
-            line-height: 1.55;
+            line-height: 1.6;
         }
-
         .privacy-item.warn {
             border-left-color: #ffa000;
             background: #fffdf5;
         }
         .privacy-item.warn h4 { color: #e65100; }
 
+        /* ============ UNOFFICIAL DISCLAIMER SECTION ============ */
+        .disclaimer-section {
+            background: #fff8e1;
+            border-top: 1px solid #ffe082;
+            border-bottom: 1px solid #ffe082;
+        }
+        .disclaimer-box {
+            max-width: 860px;
+            margin: 0 auto;
+            background: white;
+            border: 1px solid #ffe082;
+            border-radius: 12px;
+            padding: 30px 28px;
+            text-align: center;
+        }
+        .disclaimer-box .icon {
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+        .disclaimer-box h2 {
+            font-size: 22px;
+            color: #e65100;
+            margin-bottom: 12px;
+        }
+        .disclaimer-box p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.75;
+            margin-bottom: 10px;
+        }
+        .disclaimer-box p:last-child { margin-bottom: 0; }
+        .disclaimer-box strong { color: #333; }
+
         /* ============ CTA BANNER ============ */
         .cta-banner {
             background: linear-gradient(135deg, #244f85 0%, #1a3a63 100%);
             color: white;
             text-align: center;
-            padding: 60px 24px;
+            padding: 64px 24px;
         }
         .cta-banner h2 {
             font-size: 30px;
             margin-bottom: 12px;
+            letter-spacing: -0.3px;
         }
         .cta-banner p {
             font-size: 15px;
             color: #d8e4f3;
             margin-bottom: 28px;
-            max-width: 560px;
+            max-width: 580px;
             margin-left: auto;
             margin-right: auto;
+            line-height: 1.65;
         }
         .cta-banner a {
             display: inline-block;
-            padding: 14px 40px;
+            padding: 15px 42px;
             background: #ffd54f;
             color: #1a3a63;
             text-decoration: none;
             border-radius: 6px;
             font-size: 15px;
             font-weight: bold;
-            transition: transform 0.15s, box-shadow 0.15s;
+            transition: transform 0.18s, box-shadow 0.18s;
         }
         .cta-banner a:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.28);
         }
 
         /* ============ FOOTER ============ */
         footer {
             background: #1a3a63;
             color: #c5d9f0;
-            padding: 40px 24px 24px;
+            padding: 44px 24px 24px;
             font-size: 14px;
         }
-
         .footer-inner {
             max-width: 1100px;
             margin: 0 auto;
@@ -399,10 +455,9 @@
             gap: 30px;
             margin-bottom: 28px;
         }
-
         .footer-col h4 {
             color: white;
-            font-size: 14px;
+            font-size: 13px;
             margin-bottom: 12px;
             text-transform: uppercase;
             letter-spacing: 0.6px;
@@ -412,21 +467,15 @@
             line-height: 1.7;
             color: #a8c0dd;
         }
-        .footer-col ul {
-            list-style: none;
-        }
-        .footer-col ul li {
-            margin-bottom: 8px;
-        }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 8px; }
         .footer-col ul li a {
             color: #a8c0dd;
             text-decoration: none;
             font-size: 13px;
+            transition: color 0.15s;
         }
-        .footer-col ul li a:hover {
-            color: white;
-            text-decoration: underline;
-        }
+        .footer-col ul li a:hover { color: white; text-decoration: underline; }
 
         .footer-bottom {
             text-align: center;
@@ -434,61 +483,105 @@
             border-top: 1px solid #2a4a73;
             font-size: 12px;
             color: #8fa8c7;
+            line-height: 1.7;
         }
-        .footer-bottom a {
-            color: #c5d9f0;
-            text-decoration: none;
+        .footer-bottom strong { color: #ffd54f; }
+
+        /* ============ BACK TO TOP ============ */
+        .back-to-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #244f85;
+            color: white;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s, transform 0.3s, background 0.2s;
+            z-index: 90;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.2);
         }
-        .footer-bottom a:hover { text-decoration: underline; }
+        .back-to-top.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .back-to-top:hover {
+            background: #17395f;
+            transform: translateY(-3px);
+        }
 
         /* ============ RESPONSIVE ============ */
         @media (max-width: 700px) {
-            header {
-                padding: 12px 18px;
-            }
+            header { padding: 12px 18px; }
             header .brand h1 { font-size: 16px; }
+            header .brand span { display: none; }
             header nav a { padding: 8px 12px; font-size: 13px; }
+            header nav a.hide-sm { display: none; }
 
-            .hero { padding: 50px 18px 60px; }
+            .hero { padding: 54px 18px 64px; }
             .hero h1 { font-size: 30px; }
             .hero p.lead { font-size: 15px; }
-            .hero .stats-bar { gap: 24px; }
+            .hero .stats-bar { gap: 26px; margin-top: 40px; }
             .hero .stat .num { font-size: 24px; }
 
             .section-title h2 { font-size: 24px; }
-            section { padding: 44px 18px; }
+            section { padding: 46px 18px; }
+
+            .cta-banner h2 { font-size: 24px; }
         }
 
         @media (max-width: 420px) {
-            header nav .hide-sm { display: none; }
             .hero h1 { font-size: 26px; }
             .hero .cta-buttons a { padding: 12px 24px; font-size: 14px; }
+            .notice-bar { font-size: 12px; padding: 9px 14px; }
+        }
+
+        /* ============ REDUCED MOTION ============ */
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { opacity: 1; transform: none; transition: none; }
+            .hero::before { animation: none; }
+            * { scroll-behavior: auto; }
         }
     </style>
 </head>
 <body>
 
 <!-- ============ HEADER ============ -->
-<header>
+<header id="siteHeader">
     <div class="brand">
         <h1>RNBPCHS Alumni Portal</h1>
-        <span>Reconnect · Remember · Reunite</span>
+        <span>Unofficial · Made by Batch 2026</span>
     </div>
     <nav>
-        <a href="login.html" class="hide-sm">Login</a>
+        <a href="#features" class="hide-sm">Features</a>
+        <a href="#disclaimer" class="hide-sm">Disclaimer</a>
+        <a href="login.html">Login</a>
         <a href="register.html" class="btn-primary">Register</a>
     </nav>
 </header>
 
+<!-- ============ UNOFFICIAL NOTICE ============ -->
+<div class="notice-bar">
+    ⚠️ <strong>Unofficial Portal:</strong> This is a student-made alumni network. It is not affiliated with or endorsed by Ramnagar N.B.P.C. High School or its management.
+</div>
+
 <!-- ============ HERO ============ -->
-<section class="hero" style="padding-top:70px;">
+<section class="hero">
     <div class="hero-content">
-        <div class="badge-top">🎓 Official Alumni Network</div>
+        <div class="badge-top">🎓 An Unofficial Alumni Network · Built by Batch 2026</div>
         <h1>Welcome Back to<br><span class="highlight">Ramnagar N.B.P.C. High School</span></h1>
         <p class="lead">
-            Reconnect with old friends, discover where life took everyone,
-            and stay part of the school community that shaped you. Register once,
-            and join the alumni network forever.
+            A community project made by the HS Batch 2026 pass-outs — for every alumnus of our school.
+            Reconnect with old friends, browse the alumni directory, and stay part of the
+            memories that shaped us.
         </p>
         <div class="cta-buttons">
             <a href="register.html" class="primary">Join the Network →</a>
@@ -505,7 +598,7 @@
                 <div class="lbl">Batches</div>
             </div>
             <div class="stat">
-                <div class="num" id="statYears">—</div>
+                <div class="num" id="statYears">70+</div>
                 <div class="lbl">Years of Legacy</div>
             </div>
         </div>
@@ -513,66 +606,66 @@
 </section>
 
 <!-- ============ FEATURES ============ -->
-<section class="features">
+<section class="features" id="features">
     <div class="section-inner">
-        <div class="section-title">
+        <div class="section-title reveal">
             <h2>Everything You Need, In One Place</h2>
-            <p>The RNBPCHS Alumni Portal brings the entire school community together with powerful, easy-to-use features.</p>
+            <p>A clean, fast, and privacy-first alumni portal — designed by students, for students and alumni of our school.</p>
         </div>
 
         <div class="features-grid">
-            <div class="feature-card">
+            <div class="feature-card reveal">
                 <div class="icon">📝</div>
                 <h3>Easy Registration</h3>
                 <p>Sign up in minutes with your details. Your profile is automatically linked to your batch year and school record.</p>
             </div>
 
-            <div class="feature-card">
+            <div class="feature-card reveal">
                 <div class="icon">🔐</div>
                 <h3>Secure Login</h3>
                 <p>Firebase-powered authentication with email and password. Forgot your password? Reset it instantly via email.</p>
             </div>
 
-            <div class="feature-card">
+            <div class="feature-card reveal">
                 <div class="icon">👤</div>
                 <h3>Personal Dashboard</h3>
                 <p>A clean, fast dashboard that shows your profile, batch, and account status at a glance.</p>
             </div>
 
-            <div class="feature-card">
+            <div class="feature-card reveal">
                 <div class="icon">📇</div>
                 <h3>Alumni Directory</h3>
                 <p>Browse and search all registered alumni. Filter by batch year to find old classmates instantly.</p>
             </div>
 
-            <div class="feature-card">
+            <div class="feature-card reveal">
                 <div class="icon">✏️</div>
                 <h3>Edit Profile</h3>
                 <p>Update your personal, school, contact, and profession details anytime — changes reflect immediately.</p>
             </div>
 
-            <div class="feature-card">
+            <div class="feature-card reveal">
                 <div class="icon">🖼️</div>
                 <h3>Profile Photos</h3>
                 <p>Upload a profile photo or paste a hosted image link. Only your name, batch, and photo are shown publicly.</p>
             </div>
 
-            <div class="feature-card">
+            <div class="feature-card reveal">
                 <div class="icon">🛡️</div>
                 <h3>Privacy First</h3>
                 <p>Your contact details stay private. Only your batch year is shown publicly. Nobody sees your email, phone, or address.</p>
             </div>
 
-            <div class="feature-card">
+            <div class="feature-card reveal">
                 <div class="icon">⚡</div>
                 <h3>Fast & Responsive</h3>
                 <p>Works beautifully on mobile, tablet, and desktop. Fast loading, smooth navigation, zero clutter.</p>
             </div>
 
-            <div class="feature-card">
+            <div class="feature-card reveal">
                 <div class="icon">✅</div>
                 <h3>Verified Accounts</h3>
-                <p>Each account is verified by the school admin. Blocked or rejected accounts are handled gracefully.</p>
+                <p>Each account is verified by the HOI (Head of Institution). Blocked or rejected accounts are handled gracefully.</p>
             </div>
         </div>
     </div>
@@ -581,21 +674,21 @@
 <!-- ============ HOW IT WORKS ============ -->
 <section class="how-it-works">
     <div class="section-inner">
-        <div class="section-title">
+        <div class="section-title reveal">
             <h2>Get Started in 3 Simple Steps</h2>
             <p>From registration to reconnecting with classmates — it takes less than 5 minutes.</p>
         </div>
 
         <div class="steps">
-            <div class="step">
+            <div class="step reveal">
                 <h3>Register</h3>
                 <p>Fill in your details, choose your batch year and last studied class, and create your account with a secure password.</p>
             </div>
-            <div class="step">
+            <div class="step reveal">
                 <h3>Verify & Login</h3>
-                <p>Your account is ready immediately. Log in using your registered email and password to access your dashboard.</p>
+                <p>Your account is verified by the school HOI. Once approved, log in using your registered email and password.</p>
             </div>
-            <div class="step">
+            <div class="step reveal">
                 <h3>Reconnect</h3>
                 <p>Browse the alumni directory, filter by batch, and rediscover old friends. Update your profile anytime.</p>
             </div>
@@ -606,28 +699,51 @@
 <!-- ============ PRIVACY ============ -->
 <section class="privacy">
     <div class="section-inner">
-        <div class="section-title">
+        <div class="section-title reveal">
             <h2>Your Privacy, Our Priority</h2>
             <p>We built the portal with strict privacy controls. Here's exactly what's visible and what's not.</p>
         </div>
 
         <div class="privacy-grid">
-            <div class="privacy-item">
+            <div class="privacy-item reveal">
                 <h4>✅ Publicly Visible</h4>
                 <p>Your <strong>name</strong>, <strong>batch year</strong>, and <strong>profile photo</strong> appear in the alumni directory so classmates can find you.</p>
             </div>
-            <div class="privacy-item">
+            <div class="privacy-item reveal">
                 <h4>✅ Visible to You Only</h4>
                 <p>Your full profile — including school details, contact info, and profession — is only visible to you when you log in.</p>
             </div>
-            <div class="privacy-item">
+            <div class="privacy-item reveal">
                 <h4>🔒 Always Private</h4>
                 <p>Your <strong>email, mobile number, address, date of birth</strong>, and all other personal details are never shown to other alumni.</p>
             </div>
-            <div class="privacy-item warn">
-                <h4>⚠️ Admin Access</h4>
-                <p>School administrators can review your full profile for verification and account management purposes only.</p>
+            <div class="privacy-item warn reveal">
+                <h4>⚠️ HOI Access</h4>
+                <p>The current HOI (Head of Institution) can review profiles for verification and account management purposes only.</p>
             </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ DISCLAIMER ============ -->
+<section class="disclaimer-section" id="disclaimer">
+    <div class="section-inner">
+        <div class="disclaimer-box reveal">
+            <div class="icon">📢</div>
+            <h2>This Is an Unofficial Student Project</h2>
+            <p>
+                This alumni portal is <strong>not an official website</strong> of Ramnagar N.B.P.C. High School.
+                It is a <strong>voluntary, non-commercial project</strong> created by the HS Batch 2026 pass-outs
+                to help alumni reconnect with each other.
+            </p>
+            <p>
+                It is not affiliated with, endorsed by, or managed by the school authorities.
+                Any data you submit is stored securely and used only for the purpose of this alumni network.
+                For official school matters, please contact the school directly.
+            </p>
+            <p>
+                <strong>Made with ❤️ by HS Batch 2026 pass-outs.</strong>
+            </p>
         </div>
     </div>
 </section>
@@ -635,7 +751,7 @@
 <!-- ============ CTA BANNER ============ -->
 <section class="cta-banner">
     <h2>Ready to Reconnect?</h2>
-    <p>Join hundreds of alumni from Ramnagar N.B.P.C. High School. Your classmates are already waiting.</p>
+    <p>Join the growing alumni community from our school. Your classmates are already waiting.</p>
     <a href="register.html">Create Your Account →</a>
 </section>
 
@@ -645,7 +761,7 @@
         <div class="footer-col">
             <h4>RNBPCHS Alumni Portal</h4>
             <p>
-                The official alumni network of Ramnagar N.B.P.C. High School.
+                An <strong>unofficial alumni network</strong> for Ramnagar N.B.P.C. High School.
                 Built with love by students of HS Batch 2026.
             </p>
         </div>
@@ -663,34 +779,35 @@
             <h4>School</h4>
             <ul>
                 <li><a href="#" onclick="return false;">Ramnagar N.B.P.C. High School</a></li>
-                <li><a href="#" onclick="return false;">Est. 1952</a></li>
                 <li><a href="#" onclick="return false;">West Bengal, India</a></li>
+                <li><a href="#disclaimer">Disclaimer</a></li>
             </ul>
         </div>
 
         <div class="footer-col">
-            <h4>About</h4>
+            <h4>About This Project</h4>
             <p>
                 This portal helps alumni stay connected, find classmates,
                 and keep the school spirit alive across generations.
+                It is <strong>not an official school website</strong>.
             </p>
         </div>
     </div>
 
     <div class="footer-bottom">
-        &copy; <span id="year"></span> RNBPCHS Alumni Portal · Made by Students – HS Batch 2026
+        &copy; <span id="year"></span> RNBPCHS Alumni Portal · <strong>Unofficial</strong> · Made by HS Batch 2026 Pass-outs
     </div>
 </footer>
 
-<!-- ============ FIREBASE (for live stats) ============ -->
+<!-- ============ BACK TO TOP ============ -->
+<button type="button" class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
+<!-- ==================== SCRIPTS ==================== -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    // Firebase config — public stats only; no auth required.
-    // NOTE: For this to work, Firestore rules must allow public read
-    // on a dedicated stats doc or the alumni collection.
-    // If you don't want public reads, leave these stats as static numbers.
+    // ---- Firebase config ----
     const firebaseConfig = {
         apiKey: "AIzaSyAw-sqteTZyNoBIqHr-NTROz_BMmP6Yh7k",
         authDomain: "rnbpchs-alumni.firebaseapp.com",
@@ -700,6 +817,7 @@
         appId: "1:187797438854:web:e6e564e04aea3129fa6c07"
     };
 
+    // ---- Live stats (optional) ----
     try {
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
@@ -714,17 +832,60 @@
 
         document.getElementById("statTotal").textContent = total > 0 ? total + "+" : "100+";
         document.getElementById("statBatches").textContent = batches.size > 0 ? batches.size : "10+";
-        document.getElementById("statYears").textContent = "70+";
     } catch (err) {
-        // If public reads are blocked, show friendly placeholder numbers.
+        // Fallback placeholders if public reads are blocked
         console.warn("Live stats unavailable, showing placeholders:", err.code || err.message);
         document.getElementById("statTotal").textContent = "100+";
         document.getElementById("statBatches").textContent = "10+";
-        document.getElementById("statYears").textContent = "70+";
     }
 
-    // Footer year
+    // ---- Footer year ----
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    // ==================== SCROLL REVEAL ====================
+    const revealElements = document.querySelectorAll(".reveal");
+    if ("IntersectionObserver" in window) {
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.12,
+            rootMargin: "0px 0px -40px 0px"
+        });
+        revealElements.forEach(el => revealObserver.observe(el));
+    } else {
+        // Fallback for old browsers
+        revealElements.forEach(el => el.classList.add("visible"));
+    }
+
+    // ==================== HEADER SHADOW ON SCROLL ====================
+    const siteHeader = document.getElementById("siteHeader");
+    const backToTop = document.getElementById("backToTop");
+
+    function onScroll() {
+        const y = window.scrollY;
+        if (y > 20) {
+            siteHeader.classList.add("scrolled");
+        } else {
+            siteHeader.classList.remove("scrolled");
+        }
+        if (y > 400) {
+            backToTop.classList.add("visible");
+        } else {
+            backToTop.classList.remove("visible");
+        }
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    // ==================== BACK TO TOP ====================
+    backToTop.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
 </script>
 
 </body>
