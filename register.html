@@ -456,9 +456,7 @@
         <p>Welcome to the RNBPCHS Alumni Community 🎉</p>
         <p>Your account has been created successfully.</p>
 
-        <div class="detail" id="successDetail">
-            <!-- filled by JS -->
-        </div>
+        <div class="detail" id="successDetail"></div>
 
         <p style="font-size:13px;color:#888;margin-top:14px;">
             You can now log in using your email and password.
@@ -474,7 +472,7 @@
     Made by Students – HS Batch 2026
 </footer>
 
-<!-- Firebase SDK (v9+ modular via CDN) -->
+<!-- ==================== FIREBASE + REGISTRATION LOGIC ==================== -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -490,7 +488,7 @@
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-    // Firebase configuration
+    // ---- Firebase config ----
     const firebaseConfig = {
         apiKey: "AIzaSyAw-sqteTZyNoBIqHr-NTROz_BMmP6Yh7k",
         authDomain: "rnbpchs-alumni.firebaseapp.com",
@@ -505,16 +503,16 @@
     const db = getFirestore(app);
     const storage = getStorage(app);
 
-    // Batch years
+    // ---- Populate batch years ----
     const batchSelect = document.getElementById("batch");
     for (let year = 2018; year <= 2030; year++) {
         const option = document.createElement("option");
-        option.value = year;
-        option.text = year;
+        option.value = String(year);
+        option.text = String(year);
         batchSelect.appendChild(option);
     }
 
-    // Message helper
+    // ---- Message helpers ----
     const msgEl = document.getElementById("formMessage");
     function showMessage(text, type) {
         msgEl.textContent = text;
@@ -522,22 +520,28 @@
         if (window.innerWidth < 600) msgEl.scrollIntoView({ behavior: "smooth", block: "center" });
     }
 
-    // ============ DUPLICATE CHECK HELPERS ============
-    // Returns true if email already exists in the "alumni" collection
+    function esc(s) {
+        if (s === null || s === undefined) return "";
+        return String(s)
+            .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;").replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+    }
+
+    // ---- Duplicate checks ----
     async function emailExists(email) {
         const q = query(collection(db, "alumni"), where("email", "==", email));
         const snap = await getDocs(q);
         return !snap.empty;
     }
 
-    // Returns true if phone already exists in the "alumni" collection
     async function phoneExists(phone) {
         const q = query(collection(db, "alumni"), where("phone", "==", phone));
         const snap = await getDocs(q);
         return !snap.empty;
     }
 
-    // ============ FORM SUBMIT ============
+    // ==================== FORM SUBMIT ====================
     const form = document.getElementById("registrationForm");
     const submitBtn = document.getElementById("submitBtn");
 
@@ -547,46 +551,47 @@
         msgEl.className = "message";
         msgEl.textContent = "";
 
-        // Gather values
-        const fullName = document.getElementById("name").value.trim();
-        const fatherName = document.getElementById("father").value.trim();
-        const motherName = document.getElementById("mother").value.trim();
-        const dob = document.getElementById("dob").value;
-        const gender = document.getElementById("gender").value;
-        const photoFile = document.getElementById("photo").files[0];
-        const photoHostedUrl = document.getElementById("photoUrl").value.trim();
+        // ---- Gather values ----
+        const fullName     = document.getElementById("name").value.trim();
+        const fatherName   = document.getElementById("father").value.trim();
+        const motherName   = document.getElementById("mother").value.trim();
+        const dob          = document.getElementById("dob").value;
+        const gender       = document.getElementById("gender").value;
+        const photoFile    = document.getElementById("photo").files[0];
+        const photoHosted  = document.getElementById("photoUrl").value.trim();
 
-        const studentId = document.getElementById("studentId").value.trim();
-        const batch = batchSelect.value;
-        const lastClass = document.getElementById("class").value;
-        const roll = document.getElementById("roll").value.trim();
-        const schoolReg = document.getElementById("schoolReg").value.trim();
-        const section = document.getElementById("section").value.trim();
+        const studentId    = document.getElementById("studentId").value.trim();
+        const batch        = batchSelect.value;
+        const lastClass    = document.getElementById("class").value;
+        const roll         = document.getElementById("roll").value.trim();
+        const schoolReg    = document.getElementById("schoolReg").value.trim();
+        const section      = document.getElementById("section").value.trim();
 
-        const email = document.getElementById("email").value.trim().toLowerCase();
-        const phone = document.getElementById("phone").value.trim();
-        const altPhone = document.getElementById("altPhone").value.trim();
-        const address = document.getElementById("address").value.trim();
-        const city = document.getElementById("city").value.trim();
-        const district = document.getElementById("district").value.trim();
-        const state = document.getElementById("state").value.trim();
-        const pin = document.getElementById("pin").value.trim();
+        const email        = document.getElementById("email").value.trim().toLowerCase();
+        const phone        = document.getElementById("phone").value.trim();
+        const altPhone     = document.getElementById("altPhone").value.trim();
+        const address      = document.getElementById("address").value.trim();
+        const city         = document.getElementById("city").value.trim();
+        const district     = document.getElementById("district").value.trim();
+        const state        = document.getElementById("state").value.trim();
+        const pin          = document.getElementById("pin").value.trim();
 
-        const currentStatus = document.getElementById("status").value;
-        const institution = document.getElementById("institution").value.trim();
-        const profession = document.getElementById("profession").value.trim();
-        const location = document.getElementById("location").value.trim();
+        const currentStatus= document.getElementById("status").value;
+        const institution  = document.getElementById("institution").value.trim();
+        const profession   = document.getElementById("profession").value.trim();
+        const location     = document.getElementById("location").value.trim();
 
-        const linkedin = document.getElementById("linkedin").value.trim();
-        const website = document.getElementById("website").value.trim();
-        const about = document.getElementById("about").value.trim();
+        const linkedin     = document.getElementById("linkedin").value.trim();
+        const website      = document.getElementById("website").value.trim();
+        const about        = document.getElementById("about").value.trim();
 
-        const password = document.getElementById("password").value;
+        const password        = document.getElementById("password").value;
         const confirmPassword = document.getElementById("confirmPassword").value;
-        const termsChecked = document.getElementById("terms").checked;
+        const termsChecked    = document.getElementById("terms").checked;
 
-        // ============ VALIDATION ============
+        // ---- Client-side validation ----
         if (!fullName) { showMessage("Full name is required.", "error"); return; }
+        if (fullName.length < 2) { showMessage("Full name must be at least 2 characters.", "error"); return; }
         if (!dob) { showMessage("Date of birth is required.", "error"); return; }
         if (!batch) { showMessage("Please select your passing year / batch.", "error"); return; }
         if (!lastClass) { showMessage("Please select the last class studied.", "error"); return; }
@@ -601,7 +606,7 @@
         if (pin && (pin.length !== 6 || !/^\d+$/.test(pin))) {
             showMessage("PIN code must be exactly 6 digits (or leave blank).", "error"); return;
         }
-        if (photoHostedUrl && !/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|avif)(\?.*)?$/i.test(photoHostedUrl)) {
+        if (photoHosted && !/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|avif)(\?.*)?$/i.test(photoHosted)) {
             showMessage("Profile photo hosted link must be a valid image URL (jpg, png, gif, webp, avif).", "error"); return;
         }
         if (password.length < 8) { showMessage("Password must contain at least 8 characters.", "error"); return; }
@@ -610,30 +615,20 @@
             showMessage("You must confirm that the information provided is correct.", "error"); return;
         }
 
-        // ============ DISABLE BUTTON ============
+        // ---- Disable button ----
         submitBtn.disabled = true;
         submitBtn.textContent = "Checking details...";
 
         try {
-            // ---------- DUPLICATE EMAIL CHECK ----------
-            const emailTaken = await emailExists(email);
-            if (emailTaken) {
-                showMessage(
-                    "This email address is already registered. Please log in or use a different email.",
-                    "error"
-                );
+            // ---- Duplicate checks ----
+            if (await emailExists(email)) {
+                showMessage("This email address is already registered. Please log in or use a different email.", "error");
                 submitBtn.disabled = false;
                 submitBtn.textContent = "Submit Registration";
                 return;
             }
-
-            // ---------- DUPLICATE MOBILE CHECK ----------
-            const phoneTaken = await phoneExists(phone);
-            if (phoneTaken) {
-                showMessage(
-                    "This mobile number is already registered. Please log in or use a different number.",
-                    "error"
-                );
+            if (await phoneExists(phone)) {
+                showMessage("This mobile number is already registered. Please log in or use a different number.", "error");
                 submitBtn.disabled = false;
                 submitBtn.textContent = "Submit Registration";
                 return;
@@ -641,30 +636,33 @@
 
             submitBtn.textContent = "Creating account...";
 
-            // ---------- CREATE AUTH USER ----------
+            // ---- Create auth user ----
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
+            const uid = user.uid;
 
-            // ---------- PHOTO ----------
-            let photoURL = photoHostedUrl;
+            // ---- Profile photo ----
+            let photoURL = photoHosted || "";
             if (photoFile) {
                 try {
-                    const storageRef = ref(storage, `profile_photos/${user.uid}_${Date.now()}`);
+                    const storageRef = ref(storage, `profile_photos/${uid}_${Date.now()}`);
                     const snapshot = await uploadBytes(storageRef, photoFile);
                     photoURL = await getDownloadURL(snapshot.ref);
                 } catch (uploadErr) {
-                    console.warn("Photo upload failed (non-critical):", uploadErr);
+                    console.warn("Photo upload failed (continuing without photo):", uploadErr);
                 }
             }
 
-            // ---------- SAVE TO FIRESTORE ----------
-            const userData = {
+            // ---- PRIVATE document (full profile) ----
+            const privateData = {
+                // Personal
                 fullName,
                 fatherName,
                 motherName,
                 dob,
                 gender,
                 photoURL,
+                // School
                 schoolName: "Ramnagar N.B.P.C. High School",
                 studentId: studentId || null,
                 batch,
@@ -672,6 +670,7 @@
                 roll,
                 schoolReg,
                 section,
+                // Contact
                 email,
                 phone,
                 altPhone,
@@ -680,43 +679,69 @@
                 district,
                 state,
                 pin,
+                // Education
                 currentStatus,
                 institution,
                 profession,
                 location,
+                // Social
                 linkedin,
                 website,
                 about,
+                // System fields
+                uid,
+                role: "alumni",           // "alumni" | "admin" | "moderator"
+                status: "approved",       // "pending" | "approved" | "rejected"
+                blocked: false,           // true | false
                 createdAt: serverTimestamp(),
-                uid: user.uid,
+                updatedAt: serverTimestamp(),
                 publicFields: ["batch"]
             };
 
-            await setDoc(doc(db, "alumni", user.uid), userData);
+            await setDoc(doc(db, "alumni", uid), privateData);
 
-            // ---------- SIGN OUT ----------
+            // ---- PUBLIC document (only display fields) ----
+            try {
+                await setDoc(doc(db, "alumni_public", uid), {
+                    uid,
+                    fullName,
+                    batch,
+                    photoURL,
+                    profession: profession || "",
+                    currentStatus: currentStatus || ""
+                });
+            } catch (publicErr) {
+                // Non-fatal — the private doc is saved. But log it.
+                console.warn("Public profile write failed (non-fatal):", publicErr);
+            }
+
+            // ---- Sign out so the user logs in via login page ----
             await signOut(auth);
 
-            // ---------- SHOW SUCCESS SCREEN ----------
+            // ---- Show success screen ----
             document.getElementById("registrationView").style.display = "none";
-            document.getElementById("successScreen").classList.add("active");
+            const successScreen = document.getElementById("successScreen");
+            successScreen.classList.add("active");
 
             document.getElementById("successDetail").innerHTML = `
-                <div><span>Name</span><strong>${escapeHtml(fullName)}</strong></div>
-                <div><span>Email</span><strong>${escapeHtml(email)}</strong></div>
-                <div><span>Mobile</span><strong>${escapeHtml(phone)}</strong></div>
-                <div><span>Batch Year</span><strong>${escapeHtml(batch)}</strong></div>
+                <div><span>Name</span><strong>${esc(fullName)}</strong></div>
+                <div><span>Email</span><strong>${esc(email)}</strong></div>
+                <div><span>Mobile</span><strong>${esc(phone)}</strong></div>
+                <div><span>Batch Year</span><strong>${esc(batch)}</strong></div>
             `;
 
             window.scrollTo({ top: 0, behavior: "smooth" });
 
         } catch (error) {
             console.error("Registration error:", error);
+
+            // If the account was created but the Firestore write failed,
+            // we should clean up or at least warn the user clearly.
             let errorMsg = "Registration failed. ";
 
             switch (error.code) {
                 case "auth/email-already-in-use":
-                    errorMsg += "This email is already registered. Please log in instead.";
+                    errorMsg += "This email is already registered in Firebase Auth. Please log in or use a different email.";
                     break;
                 case "auth/invalid-email":
                     errorMsg += "The email address is not valid.";
@@ -731,27 +756,25 @@
                     errorMsg += "Too many attempts. Please try again later.";
                     break;
                 case "permission-denied":
-                    errorMsg += "Permission denied while saving data. Please contact support.";
+                    errorMsg += "Permission denied while saving data. Your Firestore security rules are blocking the write. Please contact support.";
+                    break;
+                case "unavailable":
+                    errorMsg += "Firestore is temporarily unavailable. Please try again.";
                     break;
                 default:
-                    errorMsg += error.message || "Please try again.";
+                    // Firestore errors use different codes — try to surface them
+                    if (error.message && error.message.toLowerCase().includes("permission")) {
+                        errorMsg += "Permission denied by Firestore rules. The admin must allow authenticated users to create their own documents. Please contact support.";
+                    } else {
+                        errorMsg += error.message || "Please try again.";
+                    }
             }
+
             showMessage(errorMsg, "error");
             submitBtn.disabled = false;
             submitBtn.textContent = "Submit Registration";
         }
     });
-
-    // Escape helper for success detail
-    function escapeHtml(str) {
-        if (str === null || str === undefined) return "";
-        return String(str)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#39;");
-    }
 </script>
 
 </body>
