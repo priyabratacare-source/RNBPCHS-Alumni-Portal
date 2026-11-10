@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Registration | RNBPCHS</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            color: #333;
+        }
+        header {
+            background: #244f85;
+            color: white;
+            padding: 15px 35px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        header h2 { margin: 0; font-size: 21px; }
+        header p { margin: 5px 0 0; font-size: 13px; color: #e0e9f5; }
+        header a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            padding: 9px 15px;
+            border: 1px solid #ffffff80;
+            border-radius: 4px;
+        }
+        header a:hover { background: white; color: #244f85; }
+        .container {
+            background: white;
+            width: calc(100% - 60px);
+            margin: 22px auto;
+            padding: 25px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .page-title { text-align: center; margin-bottom: 25px; }
+        .page-title h2 { margin-bottom: 8px; }
+        .page-title p { color: #777; font-size: 14px; }
+        form {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            column-gap: 22px;
+            align-items: start;
+        }
+        h3 {
+            color: #244f85;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 9px;
+            margin-top: 25px;
+            grid-column: 1 / -1;
+        }
+        label {
+            display: block;
+            margin-top: 14px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 11px;
+            margin-top: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #244f85;
+        }
+        textarea { resize: vertical; }
+        .full { grid-column: 1 / -1; }
+        .terms {
+            grid-column: 1 / -1;
+            font-size: 13px;
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-top: 20px;
+        }
+        .terms input { width: auto; margin: 0; }
+        button {
+            grid-column: 1 / -1;
+            width: 100%;
+            padding: 13px;
+            margin-top: 20px;
+            background: #244f85;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        button:hover { background: #17395f; }
+        button:disabled { background: #7a9bc2; cursor: not-allowed; }
+        .login { text-align: center; margin-top: 22px; font-size: 14px; }
+        .login a { color: #244f85; text-decoration: none; font-weight: bold; }
+        footer { text-align: center; padding: 18px; color: #666; font-size: 13px; }
+        .message {
+            grid-column: 1 / -1;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+        .message.error { display: block; background: #fdecea; color: #b71c1c; border: 1px solid #f5c6cb; }
+        .message.success { display: block; background: #e8f5e9; color: #1b5e20; border: 1px solid #c8e6c9; }
+        .message.info { display: block; background: #e3f2fd; color: #0d47a1; border: 1px solid #bbdefb; }
+        @media(max-width: 750px) {
+            .container { width: calc(100% - 24px); padding: 18px; }
+            form { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; }
+            header { padding: 15px 18px; }
+        }
+        @media(max-width: 480px) {
+            form { grid-template-columns: 1fr; }
+            .full, h3, button, .terms, .message { grid-column: 1; }
+            header { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div>
+        <h2>RNBPCHS Alumni Portal</h2>
+        <p>Reconnect. Remember. Reunite.</p>
+    </div>
+    <a href="login.html">Already a Member? Login</a>
+</header>
+
+<div class="container">
+    <div class="page-title">
+        <h2>Alumni Registration</h2>
+        <p>Join the RNBPCHS Alumni Community</p>
+    </div>
+
+    <form id="registrationForm" novalidate>
+        <div id="formMessage" class="message"></div>
+
+        <!-- 1. Personal Information -->
+        <h3>1. Personal Information</h3>
+        <div>
+            <label>Full Name *</label>
+            <input type="text" id="name" required>
+        </div>
+        <div>
+            <label>Father's Name</label>
+            <input type="text" id="father">
+        </div>
+        <div>
+            <label>Mother's Name</label>
+            <input type="text" id="mother">
+        </div>
+        <div>
+            <label>Date of Birth *</label>
+            <input type="date" id="dob" required>
+        </div>
+        <div>
+            <label>Gender</label>
+            <select id="gender">
+                <option value="">Select Gender</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+                <option>Prefer not to say</option>
+            </select>
+        </div>
+        <div>
+            <label>Profile Photo</label>
+            <input type="file" id="photo" accept="image/*">
+        </div>
+
+        <!-- 2. School Information -->
+        <h3>2. School Information</h3>
+        <div class="full">
+            <label>School Name</label>
+            <input type="text" value="Ramnagar N.B.P.C. High School" readonly>
+        </div>
+        <div>
+            <label>Passing Year / Batch *</label>
+            <select id="batch" required>
+                <option value="">Select Batch</option>
+            </select>
+        </div>
+        <div>
+            <label>Last Studied Class *</label>
+            <select id="class" required>
+                <option value="">Select Class</option>
+                <option>Class 10</option>
+                <option>Class 11</option>
+                <option>Class 12</option>
+            </select>
+        </div>
+        <div>
+            <label>School Roll Number</label>
+            <input type="text" id="roll">
+        </div>
+        <div>
+            <label>Registration Number</label>
+            <input type="text" id="schoolReg">
+        </div>
+        <div>
+            <label>Section</label>
+            <input type="text" id="section">
+        </div>
+
+        <!-- 3. Contact Information -->
+        <h3>3. Contact Information</h3>
+        <div>
+            <label>Email Address *</label>
+            <input type="email" id="email" required>
+        </div>
+        <div>
+            <label>Mobile Number *</label>
+            <input type="tel" id="phone" maxlength="10" pattern="[0-9]{10}" required>
+        </div>
+        <div>
+            <label>Alternative Mobile Number</label>
+            <input type="tel" id="altPhone" maxlength="10">
+        </div>
+        <div class="full">
+            <label>Current Address</label>
+            <textarea id="address" rows="3"></textarea>
+        </div>
+        <div>
+            <label>City / Town</label>
+            <input type="text" id="city">
+        </div>
+        <div>
+            <label>District</label>
+            <input type="text" id="district">
+        </div>
+        <div>
+            <label>State</label>
+            <input type="text" id="state">
+        </div>
+        <div>
+            <label>PIN Code</label>
+            <input type="text" id="pin" maxlength="6">
+        </div>
+
+        <!-- 4. Education and Profession -->
+        <h3>4. Current Education & Profession</h3>
+        <div>
+            <label>Current Status</label>
+            <select id="status">
+                <option value="">Select Status</option>
+                <option>School Student</option>
+                <option>College Student</option>
+                <option>University Student</option>
+                <option>Working Professional</option>
+                <option>Business Owner</option>
+                <option>Self Employed</option>
+                <option>Preparing for Competitive Exams</option>
+                <option>Other</option>
+            </select>
+        </div>
+        <div>
+            <label>College / Company Name</label>
+            <input type="text" id="institution">
+        </div>
+        <div>
+            <label>Course / Stream / Profession</label>
+            <input type="text" id="profession">
+        </div>
+        <div class="full">
+            <label>Current Location</label>
+            <input type="text" id="location">
+        </div>
+
+        <!-- 5. Social Information -->
+        <h3>5. Social Information</h3>
+        <div>
+            <label>LinkedIn Profile</label>
+            <input type="url" id="linkedin" placeholder="https://linkedin.com/in/...">
+        </div>
+        <div>
+            <label>Personal Website</label>
+            <input type="url" id="website" placeholder="https://example.com">
+        </div>
+        <div class="full">
+            <label>About Yourself</label>
+            <textarea id="about" rows="4" placeholder="Write something about yourself..."></textarea>
+        </div>
+
+        <!-- 6. Account Security -->
+        <h3>6. Account Security</h3>
+        <div>
+            <label>Create Password *</label>
+            <input type="password" id="password" minlength="8" required>
+        </div>
+        <div>
+            <label>Confirm Password *</label>
+            <input type="password" id="confirmPassword" required>
+        </div>
+
+        <!-- Terms -->
+        <label class="terms">
+            <input type="checkbox" id="terms" required>
+            I confirm that the information provided is correct.
+        </label>
+
+        <button type="submit" id="submitBtn">Submit Registration</button>
+    </form>
+
+    <div class="login">
+        Already registered? <a href="login.html">Login Here</a>
+    </div>
+</div>
+
+<footer>
+    RNBPCHS Alumni Portal<br>
+    Made by Students – HS Batch 2026
+</footer>
+
+<!-- Firebase SDK (v9+ modular via CDN) -->
+<script type="module">
+    // Import Firebase modules
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyAw-sqteTZyNoBIqHr-NTROz_BMmP6Yh7k",
+        authDomain: "rnbpchs-alumni.firebaseapp.com",
+        projectId: "rnbpchs-alumni",
+        storageBucket: "rnbpchs-alumni.firebasestorage.app",
+        messagingSenderId: "187797438854",
+        appId: "1:187797438854:web:e6e564e04aea3129fa6c07"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    // Generate Batch Years
+    const batchSelect = document.getElementById("batch");
+    for (let year = 2018; year <= 2030; year++) {
+        const option = document.createElement("option");
+        option.value = year;
+        option.text = year;
+        batchSelect.appendChild(option);
+    }
+
+    // Helper to show messages
+    const msgEl = document.getElementById("formMessage");
+    function showMessage(text, type) {
+        msgEl.textContent = text;
+        msgEl.className = "message " + type;
+        // Auto-scroll to message on mobile
+        if (window.innerWidth < 600) msgEl.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    // Form submission
+    const form = document.getElementById("registrationForm");
+    const submitBtn = document.getElementById("submitBtn");
+
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        // Clear previous message
+        msgEl.className = "message";
+        msgEl.textContent = "";
+
+        // Gather values
+        const fullName = document.getElementById("name").value.trim();
+        const fatherName = document.getElementById("father").value.trim();
+        const motherName = document.getElementById("mother").value.trim();
+        const dob = document.getElementById("dob").value;
+        const gender = document.getElementById("gender").value;
+        const photoFile = document.getElementById("photo").files[0];
+
+        const batch = batchSelect.value;
+        const lastClass = document.getElementById("class").value;
+        const roll = document.getElementById("roll").value.trim();
+        const schoolReg = document.getElementById("schoolReg").value.trim();
+        const section = document.getElementById("section").value.trim();
+
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const altPhone = document.getElementById("altPhone").value.trim();
+        const address = document.getElementById("address").value.trim();
+        const city = document.getElementById("city").value.trim();
+        const district = document.getElementById("district").value.trim();
+        const state = document.getElementById("state").value.trim();
+        const pin = document.getElementById("pin").value.trim();
+
+        const currentStatus = document.getElementById("status").value;
+        const institution = document.getElementById("institution").value.trim();
+        const profession = document.getElementById("profession").value.trim();
+        const location = document.getElementById("location").value.trim();
+
+        const linkedin = document.getElementById("linkedin").value.trim();
+        const website = document.getElementById("website").value.trim();
+        const about = document.getElementById("about").value.trim();
+
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+        const termsChecked = document.getElementById("terms").checked;
+
+        // --- Validation ---
+        if (!fullName) {
+            showMessage("Full name is required.", "error");
+            return;
+        }
+        if (!dob) {
+            showMessage("Date of birth is required.", "error");
+            return;
+        }
+        if (!batch) {
+            showMessage("Please select your passing year / batch.", "error");
+            return;
+        }
+        if (!lastClass) {
+            showMessage("Please select the last class studied.", "error");
+            return;
+        }
+        if (!email) {
+            showMessage("Email address is required.", "error");
+            return;
+        }
+        if (!/^\S+@\S+\.\S+$/.test(email)) {
+            showMessage("Please enter a valid email address.", "error");
+            return;
+        }
+        if (!phone || phone.length !== 10 || !/^\d+$/.test(phone)) {
+            showMessage("Mobile number must be exactly 10 digits.", "error");
+            return;
+        }
+        if (altPhone && (altPhone.length !== 10 || !/^\d+$/.test(altPhone))) {
+            showMessage("Alternative mobile number must be exactly 10 digits (or leave blank).", "error");
+            return;
+        }
+        if (pin && (pin.length !== 6 || !/^\d+$/.test(pin))) {
+            showMessage("PIN code must be exactly 6 digits (or leave blank).", "error");
+            return;
+        }
+        if (password.length < 8) {
+            showMessage("Password must contain at least 8 characters.", "error");
+            return;
+        }
+        if (password !== confirmPassword) {
+            showMessage("Passwords do not match.", "error");
+            return;
+        }
+        if (!termsChecked) {
+            showMessage("You must confirm that the information provided is correct.", "error");
+            return;
+        }
+
+        // --- Disable button during processing ---
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Creating account...";
+
+        try {
+            // 1. Create user in Firebase Authentication
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 2. Upload profile photo (if provided)
+            let photoURL = "";
+            if (photoFile) {
+                try {
+                    const storageRef = ref(storage, `profile_photos/${user.uid}_${Date.now()}`);
+                    const snapshot = await uploadBytes(storageRef, photoFile);
+                    photoURL = await getDownloadURL(snapshot.ref);
+                } catch (uploadErr) {
+                    console.warn("Photo upload failed (non-critical):", uploadErr);
+                    // We'll continue without photo; you could choose to fail here, but we don't.
+                }
+            }
+
+            // 3. Save user data to Firestore (using uid as document ID)
+            const userData = {
+                // Personal
+                fullName,
+                fatherName,
+                motherName,
+                dob,
+                gender,
+                photoURL,
+                // School
+                batch,
+                lastClass,
+                roll,
+                schoolReg,
+                section,
+                schoolName: "Ramnagar N.B.P.C. High School",
+                // Contact
+                email,
+                phone,
+                altPhone,
+                address,
+                city,
+                district,
+                state,
+                pin,
+                // Education & Profession
+                currentStatus,
+                institution,
+                profession,
+                location,
+                // Social
+                linkedin,
+                website,
+                about,
+                // Meta
+                createdAt: serverTimestamp(),
+                uid: user.uid
+            };
+
+            await setDoc(doc(db, "alumni", user.uid), userData);
+
+            // 4. Sign out immediately after registration (optional; can leave logged in)
+            // We'll sign out so they proceed to login page. If you prefer to keep logged in, remove this line.
+            await signOut(auth);
+
+            // Success feedback
+            showMessage(
+                "Registration successful! Your account has been created. You can now log in.",
+                "success"
+            );
+            submitBtn.textContent = "Registered ✓";
+
+            // Optionally redirect to login after a short delay
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 2500);
+
+        } catch (error) {
+            console.error("Registration error:", error);
+            let errorMsg = "Registration failed. ";
+
+            // Map Firebase Auth errors to friendly messages
+            switch (error.code) {
+                case "auth/email-already-in-use":
+                    errorMsg += "This email is already registered. Please log in instead.";
+                    break;
+                case "auth/invalid-email":
+                    errorMsg += "The email address is not valid.";
+                    break;
+                case "auth/weak-password":
+                    errorMsg += "The password is too weak. Please use at least 8 characters.";
+                    break;
+                case "auth/network-request-failed":
+                    errorMsg += "Network error. Please check your internet connection.";
+                    break;
+                case "auth/too-many-requests":
+                    errorMsg += "Too many attempts. Please try again later.";
+                    break;
+                case "permission-denied":
+                    errorMsg += "Permission denied while saving data. Please contact support.";
+                    break;
+                default:
+                    errorMsg += error.message || "Please try again.";
+            }
+            showMessage(errorMsg, "error");
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Submit Registration";
+        }
+    });
+
+    // Re-enable button if there are validation errors (handled above) — but since we return early,
+    // we need to re-enable manually for those cases. Let's wrap validation to re-enable.
+    // Better: move validation before disabling, but that would duplicate logic.
+    // Simpler: We can attach a listener to the form that re-enables the button on user input change.
+    // Or: use a flag to only disable after validation passes. Let's restructure slightly:
+    // Actually, we disable after all validation passes. So we're fine: on validation failure, we return
+    // *before* disabling. Good.
+    // But there's one issue: the form's submit event might be triggered by Enter key; that's fine.
+
+    // Also ensure that if there's any synchronous error before disabling, button stays enabled.
+    // All validation checks happen before disabling. Good.
+
+    // Note: We also need to handle the case where user reloads after a failed attempt - button
+    // will be re-enabled because we reset it in catch and also in validation failures (we never disabled it).
+    // Perfect.
+</script>
+
+</body>
+</html>
