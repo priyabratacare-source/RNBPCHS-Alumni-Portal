@@ -177,10 +177,6 @@
             display: block; background: #e3f2fd; color: #0d47a1;
             border: 1px solid #bbdefb;
         }
-        .message.warning {
-            display: block; background: #fff8e1; color: #e65100;
-            border: 1px solid #ffe082;
-        }
 
         /* Status overlay */
         .status-overlay {
@@ -201,35 +197,19 @@
             font-size: 34px;
         }
         .status-overlay .icon.pending {
-            background: #fff8e1;
-            border: 3px solid #ffa000;
-            color: #ffa000;
+            background: #fff8e1; border: 3px solid #ffa000; color: #ffa000;
         }
-        .status-overlay .icon.blocked {
-            background: #fdecea;
-            border: 3px solid #d32f2f;
-            color: #d32f2f;
-        }
+        .status-overlay .icon.blocked,
         .status-overlay .icon.rejected {
-            background: #fdecea;
-            border: 3px solid #d32f2f;
-            color: #d32f2f;
+            background: #fdecea; border: 3px solid #d32f2f; color: #d32f2f;
         }
 
-        .status-overlay h3 {
-            margin: 0 0 8px;
-            font-size: 19px;
-        }
+        .status-overlay h3 { margin: 0 0 8px; font-size: 19px; }
         .status-overlay p {
-            font-size: 14px;
-            color: #666;
-            line-height: 1.6;
-            margin: 0 0 8px;
+            font-size: 14px; color: #666; line-height: 1.6; margin: 0 0 8px;
         }
         .status-overlay .support {
-            font-size: 13px;
-            color: #888;
-            margin-top: 14px;
+            font-size: 13px; color: #888; margin-top: 14px;
         }
         .status-overlay .back-btn {
             display: inline-block;
@@ -242,7 +222,6 @@
             cursor: pointer;
             font-size: 14px;
             font-weight: bold;
-            text-decoration: none;
         }
         .status-overlay .back-btn:hover { background: #17395f; }
 
@@ -255,20 +234,13 @@
         }
         .reset-panel.open { display: block; }
         .reset-panel h3 {
-            margin: 0 0 4px;
-            color: #244f85;
-            font-size: 17px;
+            margin: 0 0 4px; color: #244f85; font-size: 17px;
         }
         .reset-panel p {
-            margin: 0 0 14px;
-            font-size: 13px;
-            color: #777;
-            line-height: 1.45;
+            margin: 0 0 14px; font-size: 13px; color: #777; line-height: 1.45;
         }
         .reset-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 12px;
+            display: flex; gap: 10px; margin-top: 12px;
         }
         .reset-actions button {
             flex: 1;
@@ -282,9 +254,7 @@
             color: #333;
         }
         .reset-actions button.send {
-            background: #244f85;
-            color: white;
-            border-color: #244f85;
+            background: #244f85; color: white; border-color: #244f85;
         }
         .reset-actions button.send:hover { background: #17395f; }
         .reset-actions button.send:disabled {
@@ -319,7 +289,7 @@
 <main>
     <div class="login-card">
 
-        <!-- ==================== MAIN LOGIN FORM ==================== -->
+        <!-- ==================== MAIN LOGIN VIEW ==================== -->
         <div id="loginView">
             <h2>Welcome Back</h2>
             <p class="subtitle">Log in to your RNBPCHS Alumni account</p>
@@ -351,7 +321,7 @@
                 <button type="submit" id="loginBtn">Log In</button>
             </form>
 
-            <!-- Reset Panel -->
+            <!-- Reset panel -->
             <div class="reset-panel" id="resetPanel">
                 <h3>Reset your password</h3>
                 <p>
@@ -373,7 +343,7 @@
             </div>
         </div>
 
-        <!-- ==================== STATUS OVERLAY (Pending / Blocked / Rejected) ==================== -->
+        <!-- ==================== STATUS OVERLAY ==================== -->
         <div class="status-overlay" id="statusOverlay">
             <div class="icon" id="statusIcon">!</div>
             <h3 id="statusTitle">Account Status</h3>
@@ -390,7 +360,7 @@
     Made by Students – HS Batch 2026
 </footer>
 
-<!-- Firebase SDK -->
+<!-- ==================== FIREBASE + LOGIN LOGIC ==================== -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import {
@@ -404,6 +374,7 @@
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+    // ---- Firebase config ----
     const firebaseConfig = {
         apiKey: "AIzaSyAw-sqteTZyNoBIqHr-NTROz_BMmP6Yh7k",
         authDomain: "rnbpchs-alumni.firebaseapp.com",
@@ -417,27 +388,27 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // ---- DOM ----
-    const loginView = document.getElementById("loginView");
-    const statusOverlay = document.getElementById("statusOverlay");
-    const statusIcon = document.getElementById("statusIcon");
-    const statusTitle = document.getElementById("statusTitle");
-    const statusMessage = document.getElementById("statusMessage");
-    const statusSupport = document.getElementById("statusSupport");
-    const statusBackBtn = document.getElementById("statusBackBtn");
+    // ---- DOM refs ----
+    const loginView       = document.getElementById("loginView");
+    const statusOverlay   = document.getElementById("statusOverlay");
+    const statusIcon      = document.getElementById("statusIcon");
+    const statusTitle     = document.getElementById("statusTitle");
+    const statusMessage   = document.getElementById("statusMessage");
+    const statusSupport   = document.getElementById("statusSupport");
+    const statusBackBtn   = document.getElementById("statusBackBtn");
 
-    const loginForm = document.getElementById("loginForm");
-    const loginBtn = document.getElementById("loginBtn");
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
-    const rememberMe = document.getElementById("rememberMe");
-    const msgEl = document.getElementById("formMessage");
+    const loginForm       = document.getElementById("loginForm");
+    const loginBtn        = document.getElementById("loginBtn");
+    const emailInput      = document.getElementById("email");
+    const passwordInput   = document.getElementById("password");
+    const rememberMe      = document.getElementById("rememberMe");
+    const msgEl           = document.getElementById("formMessage");
 
-    const forgotLink = document.getElementById("forgotPasswordLink");
-    const resetPanel = document.getElementById("resetPanel");
-    const resetEmail = document.getElementById("resetEmail");
-    const sendResetBtn = document.getElementById("sendResetBtn");
-    const cancelResetBtn = document.getElementById("cancelResetBtn");
+    const forgotLink      = document.getElementById("forgotPasswordLink");
+    const resetPanel      = document.getElementById("resetPanel");
+    const resetEmail      = document.getElementById("resetEmail");
+    const sendResetBtn    = document.getElementById("sendResetBtn");
+    const cancelResetBtn  = document.getElementById("cancelResetBtn");
 
     // ---- Helpers ----
     function showMessage(text, type) {
@@ -454,15 +425,14 @@
         button.textContent = isLoading ? loadingText : defaultText;
     }
 
-    // Show a status overlay (pending / blocked / rejected)
     function showStatusOverlay(type, title, message, support) {
         loginView.style.display = "none";
         statusOverlay.classList.add("active");
 
         statusIcon.className = "icon " + type;
         statusIcon.textContent =
-            type === "pending" ? "⏳" :
-            type === "blocked" ? "🚫" :
+            type === "pending"  ? "⏳" :
+            type === "blocked"  ? "🚫" :
             "❌";
 
         statusTitle.textContent = title;
@@ -514,7 +484,7 @@
         const email = emailInput.value.trim().toLowerCase();
         const password = passwordInput.value;
 
-        // Validation
+        // ---- Validation ----
         if (!email) { showMessage("Please enter your email address.", "error"); return; }
         if (!/^\S+@\S+\.\S+$/.test(email)) { showMessage("Please enter a valid email address.", "error"); return; }
         if (!password) { showMessage("Please enter your password.", "error"); return; }
@@ -522,20 +492,21 @@
         setLoading(loginBtn, true, "Logging in...", "Log In");
 
         try {
-            // Set persistence
-            const persistence = rememberMe.checked ? browserLocalPersistence : browserSessionPersistence;
+            // ---- Persistence ----
+            const persistence = rememberMe.checked
+                ? browserLocalPersistence
+                : browserSessionPersistence;
             await setPersistence(auth, persistence);
 
             // ---- Sign in ----
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            // ---- Fetch profile from Firestore ----
+            // ---- Fetch profile ----
             const userDocRef = doc(db, "alumni", user.uid);
             const userSnap = await getDoc(userDocRef);
 
             if (!userSnap.exists()) {
-                // No profile doc — treat as unapproved / incomplete
                 await signOut(auth);
                 showStatusOverlay(
                     "rejected",
@@ -550,10 +521,7 @@
             const data = userSnap.data();
 
             // ---- ROLE CHECK ----
-            // role can be: "alumni" (default), "admin", "moderator"
             const role = data.role || "alumni";
-            // If the system is admin-only for some areas, we let admin in but redirect differently
-            // Here we allow alumni and admin; anything else is blocked.
             const allowedRoles = ["alumni", "admin", "moderator"];
             if (!allowedRoles.includes(role)) {
                 await signOut(auth);
@@ -568,9 +536,7 @@
             }
 
             // ---- APPROVAL STATUS CHECK ----
-            // status can be: "pending", "approved", "rejected"
-            const status = data.status || "pending";
-
+            const status = data.status || "approved"; // default approved for older records
             if (status === "pending") {
                 await signOut(auth);
                 showStatusOverlay(
@@ -582,7 +548,6 @@
                 setLoading(loginBtn, false, "Logging in...", "Log In");
                 return;
             }
-
             if (status === "rejected") {
                 await signOut(auth);
                 showStatusOverlay(
@@ -596,7 +561,6 @@
             }
 
             // ---- BLOCKED CHECK ----
-            // blocked field: true or false
             if (data.blocked === true) {
                 await signOut(auth);
                 showStatusOverlay(
@@ -610,18 +574,19 @@
             }
 
             // ---- ALL CHECKS PASSED ----
-            // Save remembered email
             if (rememberMe.checked) {
                 localStorage.setItem("rnbpchs_remember_email", email);
             } else {
                 localStorage.removeItem("rnbpchs_remember_email");
             }
 
-            // Show success message
-            showMessage("Login successful! Welcome back, " + (data.fullName || email) + ". Redirecting...", "success");
+            showMessage(
+                "Login successful! Welcome back, " + (data.fullName || email) + ". Redirecting...",
+                "success"
+            );
 
-            // Redirect based on role
-            setTimeout(() => {
+            // ---- Redirect based on role ----
+            setTimeout(function () {
                 if (role === "admin") {
                     window.location.href = "admin-dashboard.html";
                 } else {
