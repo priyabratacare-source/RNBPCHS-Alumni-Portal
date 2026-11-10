@@ -3,474 +3,943 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alumni Registration | RNBPCHS Portal</title>
+    <title>Join the Network | RNBPCHS Portal</title>
+    <meta name="description" content="Register for the unofficial RNBPCHS alumni network. Reconnect with classmates from 1958 to today.">
     <style>
-        * { box-sizing: border-box; }
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
-            margin: 0;
-            color: #333;
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --primary: #1a3a63;
+            --primary-light: #244f85;
+            --accent: #ffd54f;
+            --accent-dark: #f9a825;
+            --bg: #f7f9fc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --success: #10b981;
+            --error: #ef4444;
+            --radius: 12px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
         }
-        header {
-            background: #244f85;
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.55;
+            min-height: 100vh;
+        }
+
+        /* ============ TOP BAR ============ */
+        .topbar {
+            background: var(--primary);
             color: white;
-            padding: 15px 35px;
+            padding: 14px 28px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
         }
-        header h2 { margin: 0; font-size: 21px; }
-        header p { margin: 5px 0 0; font-size: 13px; color: #e0e9f5; }
-        header a {
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-            padding: 9px 15px;
-            border: 1px solid #ffffff80;
-            border-radius: 4px;
-        }
-        header a:hover { background: white; color: #244f85; }
-        .container {
-            background: white;
-            width: calc(100% - 60px);
-            margin: 22px auto;
-            padding: 25px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .page-title { text-align: center; margin-bottom: 25px; }
-        .page-title h2 { margin-bottom: 8px; }
-        .page-title p { color: #777; font-size: 14px; }
-
-        .welcome-banner {
-            background: #e3f2fd;
-            border: 1px solid #bbdefb;
-            border-radius: 5px;
-            padding: 14px 18px;
-            margin-bottom: 22px;
-            font-size: 14px;
-            color: #0d47a1;
-            line-height: 1.5;
-        }
-        .welcome-banner strong { font-size: 15px; }
-        .welcome-banner ul { margin: 8px 0 0; padding-left: 20px; }
-        .welcome-banner li { margin-bottom: 4px; }
-
-        form {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            column-gap: 22px;
-            align-items: start;
-        }
-        h3 {
-            color: #244f85;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 9px;
-            margin-top: 25px;
-            grid-column: 1 / -1;
-        }
-        label {
-            display: block;
-            margin-top: 14px;
-            font-size: 14px;
-            font-weight: bold;
-        }
-        input, select, textarea {
-            width: 100%;
-            padding: 11px;
-            margin-top: 6px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-        }
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #244f85;
-        }
-        input[readonly] {
-            background: #f0f0f0;
-            color: #555;
-            cursor: not-allowed;
-        }
-        textarea { resize: vertical; }
-        .full { grid-column: 1 / -1; }
-        .terms {
-            grid-column: 1 / -1;
-            font-size: 13px;
-            font-weight: normal;
+        .topbar .brand {
             display: flex;
             align-items: center;
-            gap: 9px;
-            margin-top: 20px;
+            gap: 12px;
         }
-        .terms input { width: auto; margin: 0; }
-        button {
-            grid-column: 1 / -1;
-            width: 100%;
-            padding: 13px;
-            margin-top: 20px;
-            background: #244f85;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 15px;
-        }
-        button:hover { background: #17395f; }
-        button:disabled { background: #7a9bc2; cursor: not-allowed; }
-        .login { text-align: center; margin-top: 22px; font-size: 14px; }
-        .login a { color: #244f85; text-decoration: none; font-weight: bold; }
-        footer { text-align: center; padding: 18px; color: #666; font-size: 13px; }
-        .message {
-            grid-column: 1 / -1;
-            padding: 12px;
-            border-radius: 4px;
-            font-size: 14px;
-            margin-top: 10px;
-            display: none;
-        }
-        .message.error { display: block; background: #fdecea; color: #b71c1c; border: 1px solid #f5c6cb; }
-        .message.success { display: block; background: #e8f5e9; color: #1b5e20; border: 1px solid #c8e6c9; }
-        .message.info { display: block; background: #e3f2fd; color: #0d47a1; border: 1px solid #bbdefb; }
-        .hint {
-            display: block;
-            font-size: 12px;
-            color: #888;
-            margin-top: 4px;
-            font-weight: normal;
-        }
-        .privacy-note {
-            grid-column: 1 / -1;
-            background: #fff8e1;
-            border: 1px solid #ffe082;
-            border-radius: 4px;
-            padding: 10px 14px;
-            font-size: 13px;
-            color: #795548;
-            margin-top: 6px;
-        }
-
-        /* Success screen */
-        .success-screen {
-            display: none;
-            text-align: center;
-            padding: 30px 20px;
-        }
-        .success-screen.active { display: block; }
-        .success-screen .check-circle {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: #e8f5e9;
-            border: 3px solid #43a047;
+        .topbar .logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: var(--accent);
+            color: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 40px;
-            color: #43a047;
+            font-weight: 800;
+            font-size: 16px;
         }
-        .success-screen h2 {
-            margin: 0 0 10px;
-            color: #1b5e20;
-            font-size: 24px;
+        .topbar .brand-text h1 {
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
         }
-        .success-screen p {
-            color: #666;
-            font-size: 15px;
-            line-height: 1.6;
-            margin: 0 0 8px;
+        .topbar .brand-text span {
+            font-size: 11px;
+            color: #a8c0dd;
+            display: block;
         }
-        .success-screen .detail {
-            background: #f8f9fa;
-            border: 1px solid #e0e0e0;
-            border-radius: 5px;
-            padding: 14px 18px;
-            margin: 20px auto;
-            max-width: 420px;
-            text-align: left;
-            font-size: 14px;
-        }
-        .success-screen .detail div { margin-bottom: 6px; }
-        .success-screen .detail div:last-child { margin-bottom: 0; }
-        .success-screen .detail span { color: #888; font-size: 12px; display: block; }
-        .success-screen .detail strong { color: #333; }
-        .success-screen .login-btn {
-            display: inline-block;
-            padding: 13px 40px;
-            background: #244f85;
+        .topbar a.login-link {
             color: white;
             text-decoration: none;
-            border-radius: 4px;
-            font-size: 15px;
-            font-weight: bold;
-            margin-top: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 9px 18px;
+            border: 1px solid rgba(255,255,255,0.35);
+            border-radius: 8px;
+            transition: all 0.2s;
         }
-        .success-screen .login-btn:hover { background: #17395f; }
+        .topbar a.login-link:hover {
+            background: white;
+            color: var(--primary);
+        }
 
-        @media(max-width: 750px) {
-            .container { width: calc(100% - 24px); padding: 18px; }
-            form { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; }
-            header { padding: 15px 18px; }
+        /* ============ HERO STRIP ============ */
+        .hero-strip {
+            background: linear-gradient(135deg, var(--primary) 0%, #0f2643 100%);
+            color: white;
+            padding: 40px 24px 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
-        @media(max-width: 480px) {
-            form { grid-template-columns: 1fr; }
-            .full, h3, button, .terms, .message, .privacy-note { grid-column: 1; }
-            header { flex-direction: column; align-items: flex-start; }
+        .hero-strip::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .hero-strip .inner {
+            position: relative;
+            max-width: 680px;
+            margin: 0 auto;
+            z-index: 1;
+        }
+        .hero-strip .pill {
+            display: inline-block;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            margin-bottom: 16px;
+        }
+        .hero-strip h2 {
+            font-size: 30px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+        .hero-strip p {
+            font-size: 15px;
+            color: #c5d9f0;
+            line-height: 1.65;
+        }
+
+        /* ============ MAIN FORM AREA ============ */
+        .form-wrap {
+            max-width: 920px;
+            margin: -28px auto 40px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        /* Progress indicator */
+        .progress-bar {
+            display: flex;
+            background: #f1f5f9;
+            border-bottom: 1px solid var(--border);
+        }
+        .progress-step {
+            flex: 1;
+            padding: 14px 12px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .progress-step.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: white;
+        }
+        .progress-step .num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--border);
+            color: var(--text-muted);
+            font-size: 11px;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+        .progress-step.active .num {
+            background: var(--primary);
+            color: white;
+        }
+        .progress-step.done .num {
+            background: var(--success);
+            color: white;
+        }
+
+        /* Form body */
+        .form-body {
+            padding: 30px 32px 34px;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+        .section:last-child { margin-bottom: 0; }
+
+        .section-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        .section-head .ico {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            background: #e3f2fd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            flex-shrink: 0;
+        }
+        .section-head h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .section-head .opt {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            background: #f1f5f9;
+            padding: 2px 9px;
+            border-radius: 10px;
+            margin-left: auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px 20px;
+        }
+        .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+        .full { grid-column: 1 / -1; }
+
+        .field { position: relative; }
+
+        .field label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+        .field label .req {
+            color: var(--error);
+            margin-left: 2px;
+        }
+        .field label .optional {
+            color: var(--text-muted);
+            font-weight: 400;
+            font-size: 12px;
+            margin-left: 4px;
+        }
+
+        .field input,
+        .field select,
+        .field textarea {
+            width: 100%;
+            padding: 11px 13px;
+            border: 1.5px solid var(--border);
+            border-radius: 9px;
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--text);
+            background: white;
+            transition: border-color 0.18s, box-shadow 0.18s;
+        }
+        .field input::placeholder,
+        .field textarea::placeholder {
+            color: #a0aec0;
+        }
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(36, 79, 133, 0.12);
+        }
+        .field input[readonly] {
+            background: #f1f5f9;
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+        .field textarea { resize: vertical; min-height: 70px; }
+
+        .field .hint {
+            display: block;
+            font-size: 11.5px;
+            color: var(--text-muted);
+            margin-top: 5px;
+            line-height: 1.45;
+        }
+
+        /* File input styling */
+        .file-input-wrap {
+            position: relative;
+            border: 1.5px dashed var(--border);
+            border-radius: 9px;
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.18s, background 0.18s;
+            background: #fafcff;
+        }
+        .file-input-wrap:hover {
+            border-color: var(--primary-light);
+            background: #f0f7ff;
+        }
+        .file-input-wrap input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            border: none;
+        }
+        .file-input-wrap .file-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+        .file-input-wrap .file-label strong {
+            color: var(--primary-light);
+            font-weight: 600;
+        }
+        .file-input-wrap.has-file {
+            border-color: var(--success);
+            background: #f0fdf4;
+        }
+        .file-input-wrap.has-file .file-label {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        /* Password strength */
+        .pwd-strength {
+            margin-top: 8px;
+        }
+        .pwd-strength-bar {
+            height: 5px;
+            border-radius: 3px;
+            background: #e2e8f0;
+            overflow: hidden;
+        }
+        .pwd-strength-fill {
+            height: 100%;
+            width: 0;
+            border-radius: 3px;
+            background: var(--error);
+            transition: width 0.25s, background 0.25s;
+        }
+        .pwd-strength-text {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        /* Privacy note */
+        .privacy-note {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 9px;
+            padding: 12px 15px;
+            font-size: 12.5px;
+            color: #92400e;
+            line-height: 1.55;
+            margin: 6px 0 18px;
+        }
+        .privacy-note strong { color: #78350f; }
+
+        /* Terms */
+        .terms {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 16px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: border-color 0.18s;
+        }
+        .terms:hover { border-color: var(--primary-light); }
+        .terms input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            accent-color: var(--primary);
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+        .terms span {
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        /* Submit */
+        .submit-area {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 9px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(26, 58, 99, 0.25);
+        }
+        .btn-submit:hover:not(:disabled) {
+            background: #0f2643;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(26, 58, 99, 0.35);
+        }
+        .btn-submit:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .form-footer-link {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 13.5px;
+            color: var(--text-muted);
+        }
+        .form-footer-link a {
+            color: var(--primary-light);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .form-footer-link a:hover { text-decoration: underline; }
+
+        /* ============ MESSAGES ============ */
+        .alert {
+            display: none;
+            padding: 12px 15px;
+            border-radius: 9px;
+            font-size: 13.5px;
+            line-height: 1.5;
+            margin-bottom: 18px;
+            border: 1px solid transparent;
+        }
+        .alert.show { display: block; animation: slideDown 0.25s ease; }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .alert.error {
+            background: #fef2f2;
+            color: #b91c1c;
+            border-color: #fecaca;
+        }
+        .alert.success {
+            background: #f0fdf4;
+            color: #15803d;
+            border-color: #bbf7d0;
+        }
+        .alert.info {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-color: #bfdbfe;
+        }
+
+        /* ============ SUCCESS SCREEN ============ */
+        .success-screen {
+            display: none;
+            padding: 46px 32px 40px;
+            text-align: center;
+        }
+        .success-screen.show { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success-icon {
+            width: 84px;
+            height: 84px;
+            border-radius: 50%;
+            background: #f0fdf4;
+            border: 3px solid var(--success);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 22px;
+            font-size: 40px;
+            color: var(--success);
+            animation: pop 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        @keyframes pop {
+            0% { transform: scale(0); }
+            70% { transform: scale(1.12); }
+            100% { transform: scale(1); }
+        }
+
+        .success-screen h2 {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+        .success-screen .sub {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .success-detail {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 18px 20px;
+            text-align: left;
+            max-width: 380px;
+            margin: 0 auto 24px;
+        }
+        .success-detail .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #edf2f7;
+            font-size: 13.5px;
+        }
+        .success-detail .row:last-child { border-bottom: none; }
+        .success-detail .row .k {
+            color: var(--text-muted);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            font-weight: 600;
+        }
+        .success-detail .row .v {
+            color: var(--text);
+            font-weight: 600;
+            text-align: right;
+            word-break: break-word;
+            margin-left: 12px;
+        }
+
+        .btn-login {
+            display: inline-block;
+            padding: 14px 44px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 9px;
+            font-size: 15px;
+            font-weight: 700;
+            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(26, 58, 99, 0.25);
+        }
+        .btn-login:hover {
+            background: #0f2643;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(26, 58, 99, 0.35);
+        }
+
+        .success-note {
+            font-size: 12.5px;
+            color: var(--text-muted);
+            margin-top: 16px;
+        }
+
+        /* ============ FOOTER ============ */
+        footer {
+            text-align: center;
+            padding: 26px 20px;
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+        footer strong { color: var(--primary); }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 720px) {
+            .topbar { padding: 12px 18px; }
+            .topbar .brand-text h1 { font-size: 15px; }
+            .topbar .brand-text span { display: none; }
+
+            .hero-strip { padding: 32px 18px 42px; }
+            .hero-strip h2 { font-size: 24px; }
+            .hero-strip p { font-size: 14px; }
+
+            .form-wrap { padding: 0 12px; margin-bottom: 30px; }
+            .form-body { padding: 24px 20px 28px; }
+
+            .grid, .grid.cols-3 { grid-template-columns: 1fr; gap: 14px; }
+
+            .progress-step { font-size: 10.5px; padding: 12px 6px; }
+            .progress-step .num { display: none; }
+
+            .success-screen { padding: 36px 20px 32px; }
+        }
+
+        @media (max-width: 420px) {
+            .hero-strip h2 { font-size: 21px; }
+            .section-head h3 { font-size: 15px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; }
+            html { scroll-behavior: auto; }
         }
     </style>
 </head>
 <body>
 
-<header>
-    <div>
-        <h2>RNBPCHS Portal</h2>
-        <p>Reconnect. Remember. Reunite.</p>
-    </div>
-    <a href="login.html">Already a Member? Login</a>
-</header>
-
-<div class="container">
-
-    <!-- ==================== REGISTRATION VIEW ==================== -->
-    <div id="registrationView">
-        <div class="page-title">
-            <h2>Alumni Registration</h2>
-            <p>Join the RNBPCHS Portal community</p>
-        </div>
-
-        <div class="welcome-banner">
-            <strong>Welcome back, student! 👋</strong><br>
-            You're one step away from joining the RNBPCHS Portal network. Here's what you should know:
-            <ul>
-                <li><strong>School Name</strong> is fixed — you cannot change it.</li>
-                <li><strong>School Student ID</strong> is optional — fill it if you remember it.</li>
-                <li><strong>Profile Photo</strong> is optional. You can paste a hosted image link instead of uploading.</li>
-                <li><strong>Only your Batch Year is shown publicly</strong> in the internal system. All other details stay secure.</li>
-                <li><strong>Email & Mobile Number must be unique</strong> — no duplicate registrations allowed.</li>
-                <li><strong>Batch Year</strong> can be selected from <strong>1958 up to the current year</strong>.</li>
-            </ul>
-        </div>
-
-        <form id="registrationForm" novalidate>
-            <div id="formMessage" class="message"></div>
-
-            <!-- 1. Personal Information -->
-            <h3>1. Personal Information</h3>
-            <div>
-                <label>Full Name *</label>
-                <input type="text" id="name" required autocomplete="name">
-            </div>
-            <div>
-                <label>Father's Name</label>
-                <input type="text" id="father">
-            </div>
-            <div>
-                <label>Mother's Name</label>
-                <input type="text" id="mother">
-            </div>
-            <div>
-                <label>Date of Birth *</label>
-                <input type="date" id="dob" required>
-            </div>
-            <div>
-                <label>Gender</label>
-                <select id="gender">
-                    <option value="">Select Gender</option>
-                    <option>Male</option>
-                    <option>Female</option>
-                    <option>Other</option>
-                    <option>Prefer not to say</option>
-                </select>
-            </div>
-            <div>
-                <label>Profile Photo (optional)</label>
-                <input type="file" id="photo" accept="image/*">
-                <small class="hint">Upload a photo OR paste a hosted image link below.</small>
-            </div>
-            <div class="full">
-                <label>Profile Photo Hosted Link (optional)</label>
-                <input type="url" id="photoUrl" placeholder="https://example.com/photo.jpg">
-                <small class="hint">Paste a direct image URL (e.g. from Google Drive, Imgur, etc.). Not mandatory.</small>
-            </div>
-
-            <!-- 2. School Information -->
-            <h3>2. School Information</h3>
-            <div class="full">
-                <label>School Name</label>
-                <input type="text" value="Ramnagar N.B.P.C. High School" readonly>
-                <small class="hint">Fixed — this cannot be changed.</small>
-            </div>
-            <div>
-                <label>School Student ID (optional)</label>
-                <input type="text" id="studentId" placeholder="Enter only if you remember it">
-                <small class="hint">Not mandatory — leave blank if you don't remember.</small>
-            </div>
-            <div>
-                <label>Passing Year / Batch *</label>
-                <select id="batch" required>
-                    <option value="">Select Batch</option>
-                </select>
-                <small class="hint">Years from 1958 up to the current year.</small>
-            </div>
-            <div>
-                <label>Last Studied Class *</label>
-                <select id="class" required>
-                    <option value="">Select Class</option>
-                    <option>Class 10</option>
-                    <option>Class 11</option>
-                    <option>Class 12</option>
-                </select>
-            </div>
-            <div>
-                <label>School Roll Number</label>
-                <input type="text" id="roll">
-            </div>
-            <div>
-                <label>Registration Number</label>
-                <input type="text" id="schoolReg">
-            </div>
-            <div>
-                <label>Section</label>
-                <input type="text" id="section">
-            </div>
-
-            <div class="privacy-note">
-                <strong>🔒 Privacy notice:</strong> Only your <strong>Batch Year</strong> is visible publicly in the internal system.
-                Your name, contact details, and all other information remain secure and are only used for alumni records.
-            </div>
-
-            <!-- 3. Contact Information -->
-            <h3>3. Contact Information</h3>
-            <div>
-                <label>Email Address *</label>
-                <input type="email" id="email" required autocomplete="email">
-                <small class="hint">Must be unique — used for login.</small>
-            </div>
-            <div>
-                <label>Mobile Number *</label>
-                <input type="tel" id="phone" maxlength="10" pattern="[0-9]{10}" required autocomplete="tel">
-                <small class="hint">Must be unique — 10 digits.</small>
-            </div>
-            <div>
-                <label>Alternative Mobile Number</label>
-                <input type="tel" id="altPhone" maxlength="10">
-            </div>
-            <div class="full">
-                <label>Current Address</label>
-                <textarea id="address" rows="3"></textarea>
-            </div>
-            <div>
-                <label>City / Town</label>
-                <input type="text" id="city">
-            </div>
-            <div>
-                <label>District</label>
-                <input type="text" id="district">
-            </div>
-            <div>
-                <label>State</label>
-                <input type="text" id="state">
-            </div>
-            <div>
-                <label>PIN Code</label>
-                <input type="text" id="pin" maxlength="6">
-            </div>
-
-            <!-- 4. Education and Profession -->
-            <h3>4. Current Education & Profession</h3>
-            <div>
-                <label>Current Status</label>
-                <select id="status">
-                    <option value="">Select Status</option>
-                    <option>School Student</option>
-                    <option>College Student</option>
-                    <option>University Student</option>
-                    <option>Working Professional</option>
-                    <option>Business Owner</option>
-                    <option>Self Employed</option>
-                    <option>Preparing for Competitive Exams</option>
-                    <option>Other</option>
-                </select>
-            </div>
-            <div>
-                <label>College / Company Name</label>
-                <input type="text" id="institution">
-            </div>
-            <div>
-                <label>Course / Stream / Profession</label>
-                <input type="text" id="profession">
-            </div>
-            <div class="full">
-                <label>Current Location</label>
-                <input type="text" id="location">
-            </div>
-
-            <!-- 5. Social Information -->
-            <h3>5. Social Information</h3>
-            <div>
-                <label>LinkedIn Profile</label>
-                <input type="url" id="linkedin" placeholder="https://linkedin.com/in/...">
-            </div>
-            <div>
-                <label>Personal Website</label>
-                <input type="url" id="website" placeholder="https://example.com">
-            </div>
-            <div class="full">
-                <label>About Yourself</label>
-                <textarea id="about" rows="4" placeholder="Write something about yourself..."></textarea>
-            </div>
-
-            <!-- 6. Account Security -->
-            <h3>6. Account Security</h3>
-            <div>
-                <label>Create Password *</label>
-                <input type="password" id="password" minlength="8" required autocomplete="new-password">
-            </div>
-            <div>
-                <label>Confirm Password *</label>
-                <input type="password" id="confirmPassword" required autocomplete="new-password">
-            </div>
-
-            <!-- Terms -->
-            <label class="terms">
-                <input type="checkbox" id="terms" required>
-                I confirm that the information provided is correct.
-            </label>
-
-            <button type="submit" id="submitBtn">Submit Registration</button>
-        </form>
-
-        <div class="login">
-            Already registered? <a href="login.html">Login Here</a>
+<!-- ============ TOP BAR ============ -->
+<div class="topbar">
+    <div class="brand">
+        <div class="logo">R</div>
+        <div class="brand-text">
+            <h1>RNBPCHS Portal</h1>
+            <span>Unofficial · Made by Batch 2026</span>
         </div>
     </div>
-
-    <!-- ==================== SUCCESS VIEW ==================== -->
-    <div class="success-screen" id="successScreen">
-        <div class="check-circle">✓</div>
-        <h2>Registration Successful!</h2>
-        <p>Welcome to the RNBPCHS Portal community 🎉</p>
-        <p>Your account has been created successfully.</p>
-
-        <div class="detail" id="successDetail"></div>
-
-        <p style="font-size:13px;color:#888;margin-top:14px;">
-            You can now log in using your email and password.
-        </p>
-
-        <a href="login.html" class="login-btn">Go to Login →</a>
-    </div>
-
+    <a href="login.html" class="login-link">Already a Member? Login →</a>
 </div>
 
+<!-- ============ HERO STRIP ============ -->
+<div class="hero-strip">
+    <div class="inner">
+        <span class="pill">🎓 Join the Alumni Network</span>
+        <h2>Create Your Alumni Account</h2>
+        <p>Reconnect with classmates, browse the directory, and stay part of the community. Registration takes less than 5 minutes.</p>
+    </div>
+</div>
+
+<!-- ============ FORM AREA ============ -->
+<div class="form-wrap">
+    <div class="form-card">
+
+        <!-- Progress -->
+        <div class="progress-bar" id="progressBar">
+            <div class="progress-step active" data-step="1"><span class="num">1</span>Personal</div>
+            <div class="progress-step" data-step="2"><span class="num">2</span>School</div>
+            <div class="progress-step" data-step="3"><span class="num">3</span>Contact</div>
+            <div class="progress-step" data-step="4"><span class="num">4</span>Account</div>
+        </div>
+
+        <!-- ============ REGISTRATION FORM ============ -->
+        <div id="registrationView">
+
+            <div class="form-body">
+
+                <div class="alert" id="formAlert"></div>
+
+                <form id="registrationForm" novalidate>
+
+                    <!-- ===== SECTION 1: PERSONAL ===== -->
+                    <div class="section" data-section="1">
+                        <div class="section-head">
+                            <div class="ico">👤</div>
+                            <h3>Personal Information</h3>
+                            <span class="opt">Required *</span>
+                        </div>
+
+                        <div class="grid">
+                            <div class="field">
+                                <label for="name">Full Name <span class="req">*</span></label>
+                                <input type="text" id="name" placeholder="e.g. Priyabrata Das" required autocomplete="name">
+                            </div>
+                            <div class="field">
+                                <label for="dob">Date of Birth <span class="req">*</span></label>
+                                <input type="date" id="dob" required>
+                            </div>
+                            <div class="field">
+                                <label for="father">Father's Name <span class="optional">(optional)</span></label>
+                                <input type="text" id="father" placeholder="e.g. Ramesh Das">
+                            </div>
+                            <div class="field">
+                                <label for="mother">Mother's Name <span class="optional">(optional)</span></label>
+                                <input type="text" id="mother" placeholder="e.g. Sita Das">
+                            </div>
+                            <div class="field">
+                                <label for="gender">Gender <span class="optional">(optional)</span></label>
+                                <select id="gender">
+                                    <option value="">Select gender</option>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    <option>Other</option>
+                                    <option>Prefer not to say</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="photo">Profile Photo <span class="optional">(optional)</span></label>
+                                <div class="file-input-wrap" id="photoWrap">
+                                    <input type="file" id="photo" accept="image/*">
+                                    <div class="file-label" id="photoLabel"><strong>Click to upload</strong> or drag an image here</div>
+                                </div>
+                                <span class="hint">Max 5MB. JPG, PNG, GIF, WEBP.</span>
+                            </div>
+                            <div class="field full">
+                                <label for="photoUrl">Or Paste a Photo Link <span class="optional">(optional)</span></label>
+                                <input type="url" id="photoUrl" placeholder="https://example.com/photo.jpg">
+                                <span class="hint">Direct image URL from Google Drive, Imgur, etc. Not mandatory.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== SECTION 2: SCHOOL ===== -->
+                    <div class="section" data-section="2">
+                        <div class="section-head">
+                            <div class="ico">🏫</div>
+                            <h3>School Information</h3>
+                        </div>
+
+                        <div class="grid">
+                            <div class="field full">
+                                <label>School Name</label>
+                                <input type="text" value="Ramnagar N.B.P.C. High School" readonly>
+                                <span class="hint">Fixed — cannot be changed.</span>
+                            </div>
+                            <div class="field">
+                                <label for="studentId">School Student ID <span class="optional">(optional)</span></label>
+                                <input type="text" id="studentId" placeholder="Enter if you remember it">
+                                <span class="hint">Not mandatory — leave blank if unknown.</span>
+                            </div>
+                            <div class="field">
+                                <label for="batch">Passing Year / Batch <span class="req">*</span></label>
+                                <select id="batch" required>
+                                    <option value="">Select batch year</option>
+                                </select>
+                                <span class="hint">From 1958 up to the current year.</span>
+                            </div>
+                            <div class="field">
+                                <label for="class">Last Studied Class <span class="req">*</span></label>
+                                <select id="class" required>
+                                    <option value="">Select class</option>
+                                    <option>Class 10</option>
+                                    <option>Class 11</option>
+                                    <option>Class 12</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="roll">School Roll Number <span class="optional">(optional)</span></label>
+                                <input type="text" id="roll" placeholder="e.g. 12A-07">
+                            </div>
+                            <div class="field">
+                                <label for="schoolReg">Registration Number <span class="optional">(optional)</span></label>
+                                <input type="text" id="schoolReg" placeholder="e.g. REG-2026-007">
+                            </div>
+                            <div class="field">
+                                <label for="section">Section <span class="optional">(optional)</span></label>
+                                <input type="text" id="section" placeholder="e.g. A">
+                            </div>
+                        </div>
+
+                        <div class="privacy-note">
+                            <strong>🔒 Privacy:</strong> Only your <strong>Batch Year</strong> is shown publicly in the directory. All other details stay private and are only used for alumni records.
+                        </div>
+                    </div>
+
+                    <!-- ===== SECTION 3: CONTACT ===== -->
+                    <div class="section" data-section="3">
+                        <div class="section-head">
+                            <div class="ico">📞</div>
+                            <h3>Contact Information</h3>
+                            <span class="opt">Required *</span>
+                        </div>
+
+                        <div class="grid">
+                            <div class="field">
+                                <label for="email">Email Address <span class="req">*</span></label>
+                                <input type="email" id="email" placeholder="you@example.com" required autocomplete="email">
+                                <span class="hint">Must be unique — used for login.</span>
+                            </div>
+                            <div class="field">
+                                <label for="phone">Mobile Number <span class="req">*</span></label>
+                                <input type="tel" id="phone" maxlength="10" pattern="[0-9]{10}" placeholder="10-digit number" required autocomplete="tel">
+                                <span class="hint">Must be unique — exactly 10 digits.</span>
+                            </div>
+                            <div class="field">
+                                <label for="altPhone">Alternative Mobile <span class="optional">(optional)</span></label>
+                                <input type="tel" id="altPhone" maxlength="10" placeholder="10-digit number">
+                            </div>
+                            <div class="field full">
+                                <label for="address">Current Address <span class="optional">(optional)</span></label>
+                                <textarea id="address" rows="2" placeholder="House, street, area..."></textarea>
+                            </div>
+                            <div class="field">
+                                <label for="city">City / Town <span class="optional">(optional)</span></label>
+                                <input type="text" id="city">
+                            </div>
+                            <div class="field">
+                                <label for="district">District <span class="optional">(optional)</span></label>
+                                <input type="text" id="district">
+                            </div>
+                            <div class="field">
+                                <label for="state">State <span class="optional">(optional)</span></label>
+                                <input type="text" id="state">
+                            </div>
+                            <div class="field">
+                                <label for="pin">PIN Code <span class="optional">(optional)</span></label>
+                                <input type="text" id="pin" maxlength="6" placeholder="6 digits">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== SECTION 4: EDUCATION + SOCIAL ===== -->
+                    <div class="section" data-section="4">
+                        <div class="section-head">
+                            <div class="ico">💼</div>
+                            <h3>Education, Profession & Social</h3>
+                        </div>
+
+                        <div class="grid">
+                            <div class="field">
+                                <label for="currentStatus">Current Status <span class="optional">(optional)</span></label>
+                                <select id="currentStatus">
+                                    <option value="">Select status</option>
+                                    <option>School Student</option>
+                                    <option>College Student</option>
+                                    <option>University Student</option>
+                                    <option>Working Professional</option>
+                                    <option>Business Owner</option>
+                                    <option>Self Employed</option>
+                                    <option>Preparing for Competitive Exams</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="institution">College / Company <span class="optional">(optional)</span></label>
+                                <input type="text" id="institution" placeholder="e.g. IIT Kharagpur">
+                            </div>
+                            <div class="field">
+                                <label for="profession">Course / Stream / Profession <span class="optional">(optional)</span></label>
+                                <input type="text" id="profession" placeholder="e.g. B.Tech CSE">
+                            </div>
+                            <div class="field">
+                                <label for="location">Current Location <span class="optional">(optional)</span></label>
+                                <input type="text" id="location" placeholder="e.g. Kharagpur">
+                            </div>
+                            <div class="field">
+                                <label for="linkedin">LinkedIn Profile <span class="optional">(optional)</span></label>
+                                <input type="url" id="linkedin" placeholder="https://linkedin.com/in/...">
+                            </div>
+                            <div class="field">
+                                <label for="website">Personal Website <span class="optional">(optional)</span></label>
+                                <input type="url" id="website" placeholder="https://example.com">
+                            </div>
+                            <div class="field full">
+                                <label for="about">About Yourself <span class="optional">(optional)</span></label>
+                                <textarea id="about" rows="3" placeholder="A few words about yourself..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== SECTION 5: ACCOUNT SECURITY ===== -->
+                    <div class="section" data-section="5">
+                        <div class="section-head">
+                            <div class="ico">🔐</div>
+                            <h3>Account Security</h3>
+                            <span class="opt">Required *</span>
+                        </div>
+
+                        <div class="grid">
+                            <div class="field">
+                                <label for="password">Create Password <span class="req">*</span></label>
+                                <input type="password" id="password" minlength="8" placeholder="At least 8 characters" required autocomplete="new-password">
+                                <div class="pwd-strength">
+                                    <div class="pwd-strength-bar"><div class="pwd-strength-fill" id="pwdFill"></div></div>
+                                    <div class="pwd-strength-text" id="pwdText">At least 8 characters</div>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="confirmPassword">Confirm Password <span class="req">*</span></label>
+                                <input type="password" id="confirmPassword" placeholder="Re-enter password" required autocomplete="new-password">
+                                <span class="hint" id="matchHint"></span>
+                            </div>
+                        </div>
+
+                        <label class="terms">
+                            <input type="checkbox" id="terms" required>
+                            <span>I confirm that the information provided is correct and I agree to the <strong>unofficial nature</strong> of this student-built portal.</span>
+                        </label>
+                    </div>
+
+                    <!-- ===== SUBMIT ===== -->
+                    <div class="submit-area">
+                        <button type="submit" id="submitBtn" class="btn-submit">Create My Account →</button>
+                        <div class="form-footer-link">
+                            Already registered? <a href="login.html">Log in here</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <!-- ============ SUCCESS SCREEN ============ -->
+        <div class="success-screen" id="successScreen">
+            <div class="success-icon">✓</div>
+            <h2>Registration Successful!</h2>
+            <p class="sub">Welcome to the RNBPCHS Portal community 🎉<br>Your account has been created successfully.</p>
+
+            <div class="success-detail" id="successDetail"></div>
+
+            <a href="login.html" class="btn-login">Go to Login →</a>
+            <p class="success-note">You'll receive a login page where you can sign in with your email and password.</p>
+        </div>
+
+    </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
 <footer>
-    RNBPCHS Portal<br>
-    Made by Students – HS Batch 2026
+    <strong>RNBPCHS Portal</strong> · Unofficial · Made by HS Batch 2026 Pass-outs<br>
+    Not affiliated with or endorsed by any school authority.
 </footer>
 
 <!-- ==================== FIREBASE + REGISTRATION LOGIC ==================== -->
@@ -504,12 +973,10 @@
     const db = getFirestore(app);
     const storage = getStorage(app);
 
-    // ---- Populate batch years: 1958 → current year (newest first) ----
+    // ==================== BATCH YEARS: 1958 → current ====================
     const batchSelect = document.getElementById("batch");
     const currentYear = new Date().getFullYear();
     const START_YEAR = 1958;
-
-    // Build options from current year down to 1958 (newest first)
     for (let year = currentYear; year >= START_YEAR; year--) {
         const option = document.createElement("option");
         option.value = String(year);
@@ -517,14 +984,17 @@
         batchSelect.appendChild(option);
     }
 
-    // ---- Message helpers ----
-    const msgEl = document.getElementById("formMessage");
-    function showMessage(text, type) {
-        msgEl.textContent = text;
-        msgEl.className = "message " + type;
-        if (window.innerWidth < 600) msgEl.scrollIntoView({ behavior: "smooth", block: "center" });
+    // ==================== HELPERS ====================
+    const alertEl = document.getElementById("formAlert");
+    function showAlert(text, type) {
+        alertEl.textContent = text;
+        alertEl.className = "alert show " + type;
+        alertEl.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-
+    function clearAlert() {
+        alertEl.className = "alert";
+        alertEl.textContent = "";
+    }
     function esc(s) {
         if (s === null || s === undefined) return "";
         return String(s)
@@ -533,18 +1003,97 @@
             .replace(/'/g, "&#39;");
     }
 
-    // ---- Duplicate checks ----
+    // ---- File input label update ----
+    const photoInput = document.getElementById("photo");
+    const photoWrap = document.getElementById("photoWrap");
+    const photoLabel = document.getElementById("photoLabel");
+    photoInput.addEventListener("change", () => {
+        if (photoInput.files && photoInput.files[0]) {
+            const f = photoInput.files[0];
+            photoWrap.classList.add("has-file");
+            photoLabel.innerHTML = `✓ <strong>${esc(f.name)}</strong> (${(f.size/1024).toFixed(0)} KB)`;
+        } else {
+            photoWrap.classList.remove("has-file");
+            photoLabel.innerHTML = "<strong>Click to upload</strong> or drag an image here";
+        }
+    });
+
+    // ---- Password strength ----
+    const pwdInput = document.getElementById("password");
+    const pwdFill = document.getElementById("pwdFill");
+    const pwdText = document.getElementById("pwdText");
+    pwdInput.addEventListener("input", () => {
+        const v = pwdInput.value;
+        let score = 0;
+        if (v.length >= 8) score++;
+        if (v.length >= 12) score++;
+        if (/[a-z]/.test(v) && /[A-Z]/.test(v)) score++;
+        if (/\d/.test(v)) score++;
+        if (/[^A-Za-z0-9]/.test(v)) score++;
+
+        let pct = (score / 5) * 100;
+        let color = "#ef4444";
+        let label = "Too short";
+
+        if (v.length === 0) { pct = 0; label = "At least 8 characters"; color = "#e2e8f0"; }
+        else if (v.length < 8) { pct = 15; label = "Too short — min 8 characters"; color = "#ef4444"; }
+        else if (score <= 2) { label = "Weak password"; color = "#f59e0b"; }
+        else if (score === 3) { label = "Fair password"; color = "#facc15"; }
+        else if (score === 4) { label = "Good password"; color = "#22c55e"; }
+        else { label = "Strong password"; color = "#15803d"; }
+
+        pwdFill.style.width = pct + "%";
+        pwdFill.style.background = color;
+        pwdText.textContent = label;
+    });
+
+    // ---- Confirm password match ----
+    const confirmInput = document.getElementById("confirmPassword");
+    const matchHint = document.getElementById("matchHint");
+    function checkMatch() {
+        if (!confirmInput.value) { matchHint.textContent = ""; matchHint.style.color = ""; return; }
+        if (pwdInput.value === confirmInput.value) {
+            matchHint.textContent = "✓ Passwords match";
+            matchHint.style.color = "#15803d";
+        } else {
+            matchHint.textContent = "✗ Passwords do not match";
+            matchHint.style.color = "#b91c1c";
+        }
+    }
+    pwdInput.addEventListener("input", checkMatch);
+    confirmInput.addEventListener("input", checkMatch);
+
+    // ==================== DUPLICATE CHECKS ====================
     async function emailExists(email) {
         const q = query(collection(db, "alumni"), where("email", "==", email));
         const snap = await getDocs(q);
         return !snap.empty;
     }
-
     async function phoneExists(phone) {
         const q = query(collection(db, "alumni"), where("phone", "==", phone));
         const snap = await getDocs(q);
         return !snap.empty;
     }
+
+    // ==================== PROGRESS BAR ====================
+    function setProgress(step) {
+        document.querySelectorAll(".progress-step").forEach(el => {
+            const s = parseInt(el.dataset.step, 10);
+            el.classList.remove("active", "done");
+            if (s < step) el.classList.add("done");
+            if (s === step) el.classList.add("active");
+        });
+    }
+    // Highlight section on focus
+    document.querySelectorAll("#registrationForm input, #registrationForm select, #registrationForm textarea").forEach(el => {
+        el.addEventListener("focus", () => {
+            const section = el.closest(".section");
+            if (section) {
+                const s = section.dataset.section;
+                if (s) setProgress(parseInt(s, 10));
+            }
+        });
+    });
 
     // ==================== FORM SUBMIT ====================
     const form = document.getElementById("registrationForm");
@@ -552,17 +1101,15 @@
 
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
+        clearAlert();
 
-        msgEl.className = "message";
-        msgEl.textContent = "";
-
-        // ---- Gather values ----
+        // Gather
         const fullName     = document.getElementById("name").value.trim();
         const fatherName   = document.getElementById("father").value.trim();
         const motherName   = document.getElementById("mother").value.trim();
         const dob          = document.getElementById("dob").value;
         const gender       = document.getElementById("gender").value;
-        const photoFile    = document.getElementById("photo").files[0];
+        const photoFile    = photoInput.files[0];
         const photoHosted  = document.getElementById("photoUrl").value.trim();
 
         const studentId    = document.getElementById("studentId").value.trim();
@@ -581,7 +1128,7 @@
         const state        = document.getElementById("state").value.trim();
         const pin          = document.getElementById("pin").value.trim();
 
-        const currentStatus= document.getElementById("status").value;
+        const currentStatus= document.getElementById("currentStatus").value;
         const institution  = document.getElementById("institution").value.trim();
         const profession   = document.getElementById("profession").value.trim();
         const location     = document.getElementById("location").value.trim();
@@ -590,122 +1137,92 @@
         const website      = document.getElementById("website").value.trim();
         const about        = document.getElementById("about").value.trim();
 
-        const password        = document.getElementById("password").value;
-        const confirmPassword = document.getElementById("confirmPassword").value;
+        const password        = pwdInput.value;
+        const confirmPassword = confirmInput.value;
         const termsChecked    = document.getElementById("terms").checked;
 
-        // ---- Client-side validation ----
-        if (!fullName) { showMessage("Full name is required.", "error"); return; }
-        if (fullName.length < 2) { showMessage("Full name must be at least 2 characters.", "error"); return; }
-        if (!dob) { showMessage("Date of birth is required.", "error"); return; }
-        if (!batch) { showMessage("Please select your passing year / batch.", "error"); return; }
-        if (!lastClass) { showMessage("Please select the last class studied.", "error"); return; }
-        if (!email) { showMessage("Email address is required.", "error"); return; }
-        if (!/^\S+@\S+\.\S+$/.test(email)) { showMessage("Please enter a valid email address.", "error"); return; }
+        // ---- Validation ----
+        if (!fullName) return showAlert("Please enter your full name.", "error");
+        if (fullName.length < 2) return showAlert("Full name must be at least 2 characters.", "error");
+        if (!dob) return showAlert("Please enter your date of birth.", "error");
+        if (!batch) return showAlert("Please select your batch year.", "error");
+        if (!lastClass) return showAlert("Please select the last class you studied.", "error");
+        if (!email) return showAlert("Please enter your email address.", "error");
+        if (!/^\S+@\S+\.\S+$/.test(email)) return showAlert("Please enter a valid email address.", "error");
         if (!phone || phone.length !== 10 || !/^\d+$/.test(phone)) {
-            showMessage("Mobile number must be exactly 10 digits.", "error"); return;
+            return showAlert("Mobile number must be exactly 10 digits.", "error");
         }
         if (altPhone && (altPhone.length !== 10 || !/^\d+$/.test(altPhone))) {
-            showMessage("Alternative mobile number must be exactly 10 digits (or leave blank).", "error"); return;
+            return showAlert("Alternative mobile must be 10 digits (or leave blank).", "error");
         }
         if (pin && (pin.length !== 6 || !/^\d+$/.test(pin))) {
-            showMessage("PIN code must be exactly 6 digits (or leave blank).", "error"); return;
+            return showAlert("PIN code must be exactly 6 digits (or leave blank).", "error");
         }
         if (photoHosted && !/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|avif)(\?.*)?$/i.test(photoHosted)) {
-            showMessage("Profile photo hosted link must be a valid image URL (jpg, png, gif, webp, avif).", "error"); return;
+            return showAlert("Photo link must be a valid image URL (jpg, png, gif, webp, avif).", "error");
         }
-        if (password.length < 8) { showMessage("Password must contain at least 8 characters.", "error"); return; }
-        if (password !== confirmPassword) { showMessage("Passwords do not match.", "error"); return; }
-        if (!termsChecked) {
-            showMessage("You must confirm that the information provided is correct.", "error"); return;
-        }
+        if (password.length < 8) return showAlert("Password must be at least 8 characters.", "error");
+        if (password !== confirmPassword) return showAlert("Passwords do not match.", "error");
+        if (!termsChecked) return showAlert("You must confirm the information is correct.", "error");
 
         // ---- Disable button ----
         submitBtn.disabled = true;
         submitBtn.textContent = "Checking details...";
 
         try {
-            // ---- Duplicate checks ----
+            // Duplicate email check
             if (await emailExists(email)) {
-                showMessage("This email address is already registered. Please log in or use a different email.", "error");
+                showAlert("This email is already registered. Please log in or use a different email.", "error");
                 submitBtn.disabled = false;
-                submitBtn.textContent = "Submit Registration";
+                submitBtn.textContent = "Create My Account →";
                 return;
             }
+            // Duplicate phone check
             if (await phoneExists(phone)) {
-                showMessage("This mobile number is already registered. Please log in or use a different number.", "error");
+                showAlert("This mobile number is already registered. Please log in or use a different number.", "error");
                 submitBtn.disabled = false;
-                submitBtn.textContent = "Submit Registration";
+                submitBtn.textContent = "Create My Account →";
                 return;
             }
 
             submitBtn.textContent = "Creating account...";
 
             // ---- Create auth user ----
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
-            const uid = user.uid;
+            const cred = await createUserWithEmailAndPassword(auth, email, password);
+            const uid = cred.user.uid;
 
-            // ---- Profile photo ----
+            // ---- Photo upload ----
             let photoURL = photoHosted || "";
             if (photoFile) {
                 try {
                     const storageRef = ref(storage, `profile_photos/${uid}_${Date.now()}`);
-                    const snapshot = await uploadBytes(storageRef, photoFile);
-                    photoURL = await getDownloadURL(snapshot.ref);
-                } catch (uploadErr) {
-                    console.warn("Photo upload failed (continuing without photo):", uploadErr);
+                    const snap = await uploadBytes(storageRef, photoFile);
+                    photoURL = await getDownloadURL(snap.ref);
+                } catch (e) {
+                    console.warn("Photo upload failed (non-fatal):", e);
                 }
             }
 
-            // ---- PRIVATE document (full profile) ----
+            // ---- Private profile ----
             const privateData = {
-                // Personal
-                fullName,
-                fatherName,
-                motherName,
-                dob,
-                gender,
-                photoURL,
-                // School
+                fullName, fatherName, motherName, dob, gender, photoURL,
                 schoolName: "Ramnagar N.B.P.C. High School",
                 studentId: studentId || null,
-                batch,
-                lastClass,
-                roll,
-                schoolReg,
-                section,
-                // Contact
-                email,
-                phone,
-                altPhone,
-                address,
-                city,
-                district,
-                state,
-                pin,
-                // Education
-                currentStatus,
-                institution,
-                profession,
-                location,
-                // Social
-                linkedin,
-                website,
-                about,
-                // System fields
+                batch, lastClass, roll, schoolReg, section,
+                email, phone, altPhone, address, city, district, state, pin,
+                currentStatus, institution, profession, location,
+                linkedin, website, about,
                 uid,
-                role: "alumni",           // "alumni" | "admin" | "hoi"
-                status: "approved",       // "pending" | "approved" | "rejected"
-                blocked: false,           // true | false
+                role: "alumni",
+                status: "approved",
+                blocked: false,
                 createdAt: serverTimestamp(),
                 updatedAt: serverTimestamp(),
                 publicFields: ["batch"]
             };
-
             await setDoc(doc(db, "alumni", uid), privateData);
 
-            // ---- PUBLIC document (only display fields) ----
+            // ---- Public mirror ----
             try {
                 await setDoc(doc(db, "alumni_public", uid), {
                     uid,
@@ -715,66 +1232,60 @@
                     profession: profession || "",
                     currentStatus: currentStatus || ""
                 });
-            } catch (publicErr) {
-                // Non-fatal — the private doc is saved. But log it.
-                console.warn("Public profile write failed (non-fatal):", publicErr);
+            } catch (e) {
+                console.warn("Public mirror write failed (non-fatal):", e);
             }
 
-            // ---- Sign out so the user logs in via login page ----
+            // ---- Sign out ----
             await signOut(auth);
 
-            // ---- Show success screen ----
+            // ---- Show success ----
             document.getElementById("registrationView").style.display = "none";
-            const successScreen = document.getElementById("successScreen");
-            successScreen.classList.add("active");
+            document.getElementById("successScreen").classList.add("show");
+            document.getElementById("progressBar").style.display = "none";
 
             document.getElementById("successDetail").innerHTML = `
-                <div><span>Name</span><strong>${esc(fullName)}</strong></div>
-                <div><span>Email</span><strong>${esc(email)}</strong></div>
-                <div><span>Mobile</span><strong>${esc(phone)}</strong></div>
-                <div><span>Batch Year</span><strong>${esc(batch)}</strong></div>
+                <div class="row"><span class="k">Name</span><span class="v">${esc(fullName)}</span></div>
+                <div class="row"><span class="k">Email</span><span class="v">${esc(email)}</span></div>
+                <div class="row"><span class="k">Mobile</span><span class="v">${esc(phone)}</span></div>
+                <div class="row"><span class="k">Batch Year</span><span class="v">${esc(batch)}</span></div>
             `;
-
             window.scrollTo({ top: 0, behavior: "smooth" });
 
         } catch (error) {
             console.error("Registration error:", error);
-
-            let errorMsg = "Registration failed. ";
+            let msg = "Registration failed. ";
 
             switch (error.code) {
                 case "auth/email-already-in-use":
-                    errorMsg += "This email is already registered in Firebase Auth. Please log in or use a different email.";
+                    msg += "This email is already registered. Please log in instead.";
                     break;
                 case "auth/invalid-email":
-                    errorMsg += "The email address is not valid.";
+                    msg += "The email address is not valid.";
                     break;
                 case "auth/weak-password":
-                    errorMsg += "The password is too weak. Please use at least 8 characters.";
+                    msg += "The password is too weak. Use at least 8 characters.";
                     break;
                 case "auth/network-request-failed":
-                    errorMsg += "Network error. Please check your internet connection.";
+                    msg += "Network error. Please check your connection.";
                     break;
                 case "auth/too-many-requests":
-                    errorMsg += "Too many attempts. Please try again later.";
+                    msg += "Too many attempts. Please try again later.";
                     break;
                 case "permission-denied":
-                    errorMsg += "Permission denied while saving data. Your Firestore security rules are blocking the write. Please contact support.";
-                    break;
-                case "unavailable":
-                    errorMsg += "Firestore is temporarily unavailable. Please try again.";
+                    msg += "Permission denied while saving data. Firestore rules are blocking the write. Please contact support.";
                     break;
                 default:
                     if (error.message && error.message.toLowerCase().includes("permission")) {
-                        errorMsg += "Permission denied by Firestore rules. The admin must allow authenticated users to create their own documents. Please contact support.";
+                        msg += "Permission denied by Firestore rules. Please contact support.";
                     } else {
-                        errorMsg += error.message || "Please try again.";
+                        msg += error.message || "Please try again.";
                     }
             }
 
-            showMessage(errorMsg, "error");
+            showAlert(msg, "error");
             submitBtn.disabled = false;
-            submitBtn.textContent = "Submit Registration";
+            submitBtn.textContent = "Create My Account →";
         }
     });
 </script>
