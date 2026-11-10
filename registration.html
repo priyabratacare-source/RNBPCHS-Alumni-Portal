@@ -44,6 +44,25 @@
         .page-title { text-align: center; margin-bottom: 25px; }
         .page-title h2 { margin-bottom: 8px; }
         .page-title p { color: #777; font-size: 14px; }
+
+        /* Welcome banner */
+        .welcome-banner {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 5px;
+            padding: 14px 18px;
+            margin-bottom: 22px;
+            font-size: 14px;
+            color: #0d47a1;
+            line-height: 1.5;
+        }
+        .welcome-banner strong { font-size: 15px; }
+        .welcome-banner ul {
+            margin: 8px 0 0;
+            padding-left: 20px;
+        }
+        .welcome-banner li { margin-bottom: 4px; }
+
         form {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -75,6 +94,11 @@
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: #244f85;
+        }
+        input[readonly] {
+            background: #f0f0f0;
+            color: #555;
+            cursor: not-allowed;
         }
         textarea { resize: vertical; }
         .full { grid-column: 1 / -1; }
@@ -116,6 +140,23 @@
         .message.error { display: block; background: #fdecea; color: #b71c1c; border: 1px solid #f5c6cb; }
         .message.success { display: block; background: #e8f5e9; color: #1b5e20; border: 1px solid #c8e6c9; }
         .message.info { display: block; background: #e3f2fd; color: #0d47a1; border: 1px solid #bbdefb; }
+        .hint {
+            display: block;
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+            font-weight: normal;
+        }
+        .privacy-note {
+            grid-column: 1 / -1;
+            background: #fff8e1;
+            border: 1px solid #ffe082;
+            border-radius: 4px;
+            padding: 10px 14px;
+            font-size: 13px;
+            color: #795548;
+            margin-top: 6px;
+        }
         @media(max-width: 750px) {
             .container { width: calc(100% - 24px); padding: 18px; }
             form { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; }
@@ -123,7 +164,7 @@
         }
         @media(max-width: 480px) {
             form { grid-template-columns: 1fr; }
-            .full, h3, button, .terms, .message { grid-column: 1; }
+            .full, h3, button, .terms, .message, .privacy-note { grid-column: 1; }
             header { flex-direction: column; align-items: flex-start; }
         }
     </style>
@@ -144,6 +185,18 @@
         <p>Join the RNBPCHS Alumni Community</p>
     </div>
 
+    <!-- Welcome / Info Banner -->
+    <div class="welcome-banner">
+        <strong>Welcome back, student! 👋</strong><br>
+        You're one step away from joining the RNBPCHS Alumni network. Here's what you should know:
+        <ul>
+            <li><strong>School Name</strong> is fixed to <em>Ramnagar N.B.P.C. High School</em> — you cannot change it.</li>
+            <li><strong>School Student ID</strong> is optional — fill it if you remember it.</li>
+            <li><strong>Profile Photo</strong> is optional. You can paste a hosted image link instead of uploading.</li>
+            <li><strong>Only your Batch Year is shown publicly</strong> in the internal system. All other details stay secure.</li>
+        </ul>
+    </div>
+
     <form id="registrationForm" novalidate>
         <div id="formMessage" class="message"></div>
 
@@ -151,7 +204,7 @@
         <h3>1. Personal Information</h3>
         <div>
             <label>Full Name *</label>
-            <input type="text" id="name" required>
+            <input type="text" id="name" required autocomplete="name">
         </div>
         <div>
             <label>Father's Name</label>
@@ -176,8 +229,14 @@
             </select>
         </div>
         <div>
-            <label>Profile Photo</label>
+            <label>Profile Photo (optional)</label>
             <input type="file" id="photo" accept="image/*">
+            <small class="hint">Upload a photo OR paste a hosted image link below.</small>
+        </div>
+        <div class="full">
+            <label>Profile Photo Hosted Link (optional)</label>
+            <input type="url" id="photoUrl" placeholder="https://example.com/photo.jpg">
+            <small class="hint">Paste a direct image URL (e.g. from Google Drive, Imgur, etc.). Not mandatory.</small>
         </div>
 
         <!-- 2. School Information -->
@@ -185,12 +244,19 @@
         <div class="full">
             <label>School Name</label>
             <input type="text" value="Ramnagar N.B.P.C. High School" readonly>
+            <small class="hint">Fixed — this cannot be changed.</small>
+        </div>
+        <div>
+            <label>School Student ID (optional)</label>
+            <input type="text" id="studentId" placeholder="Enter only if you remember it">
+            <small class="hint">Not mandatory — leave blank if you don't remember.</small>
         </div>
         <div>
             <label>Passing Year / Batch *</label>
             <select id="batch" required>
                 <option value="">Select Batch</option>
             </select>
+            <small class="hint">This is the only school detail shown publicly in the internal system.</small>
         </div>
         <div>
             <label>Last Studied Class *</label>
@@ -214,15 +280,21 @@
             <input type="text" id="section">
         </div>
 
+        <!-- Privacy note -->
+        <div class="privacy-note">
+            <strong>🔒 Privacy notice:</strong> Only your <strong>Batch Year</strong> is visible publicly in the internal system.
+            Your name, contact details, and all other information remain secure and are only used for alumni records.
+        </div>
+
         <!-- 3. Contact Information -->
         <h3>3. Contact Information</h3>
         <div>
             <label>Email Address *</label>
-            <input type="email" id="email" required>
+            <input type="email" id="email" required autocomplete="email">
         </div>
         <div>
             <label>Mobile Number *</label>
-            <input type="tel" id="phone" maxlength="10" pattern="[0-9]{10}" required>
+            <input type="tel" id="phone" maxlength="10" pattern="[0-9]{10}" required autocomplete="tel">
         </div>
         <div>
             <label>Alternative Mobile Number</label>
@@ -297,11 +369,11 @@
         <h3>6. Account Security</h3>
         <div>
             <label>Create Password *</label>
-            <input type="password" id="password" minlength="8" required>
+            <input type="password" id="password" minlength="8" required autocomplete="new-password">
         </div>
         <div>
             <label>Confirm Password *</label>
-            <input type="password" id="confirmPassword" required>
+            <input type="password" id="confirmPassword" required autocomplete="new-password">
         </div>
 
         <!-- Terms -->
@@ -361,7 +433,6 @@
     function showMessage(text, type) {
         msgEl.textContent = text;
         msgEl.className = "message " + type;
-        // Auto-scroll to message on mobile
         if (window.innerWidth < 600) msgEl.scrollIntoView({ behavior: "smooth", block: "center" });
     }
 
@@ -372,7 +443,6 @@
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        // Clear previous message
         msgEl.className = "message";
         msgEl.textContent = "";
 
@@ -383,7 +453,9 @@
         const dob = document.getElementById("dob").value;
         const gender = document.getElementById("gender").value;
         const photoFile = document.getElementById("photo").files[0];
+        const photoHostedUrl = document.getElementById("photoUrl").value.trim();
 
+        const studentId = document.getElementById("studentId").value.trim();
         const batch = batchSelect.value;
         const lastClass = document.getElementById("class").value;
         const roll = document.getElementById("roll").value.trim();
@@ -449,6 +521,11 @@
             showMessage("PIN code must be exactly 6 digits (or leave blank).", "error");
             return;
         }
+        // Validate hosted photo URL if provided
+        if (photoHostedUrl && !/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|avif)(\?.*)?$/i.test(photoHostedUrl)) {
+            showMessage("Profile photo hosted link must be a valid image URL (jpg, png, gif, webp, avif).", "error");
+            return;
+        }
         if (password.length < 8) {
             showMessage("Password must contain at least 8 characters.", "error");
             return;
@@ -471,8 +548,10 @@
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            // 2. Upload profile photo (if provided)
-            let photoURL = "";
+            // 2. Determine profile photo URL
+            let photoURL = photoHostedUrl; // default to hosted link if provided
+
+            // If a file is uploaded, upload it and use that URL (file takes precedence over hosted link)
             if (photoFile) {
                 try {
                     const storageRef = ref(storage, `profile_photos/${user.uid}_${Date.now()}`);
@@ -480,11 +559,15 @@
                     photoURL = await getDownloadURL(snapshot.ref);
                 } catch (uploadErr) {
                     console.warn("Photo upload failed (non-critical):", uploadErr);
-                    // We'll continue without photo; you could choose to fail here, but we don't.
+                    // Fall back to hosted URL if upload fails
+                    if (!photoURL) {
+                        // both absent — fine, photoURL stays ""
+                    }
                 }
             }
 
-            // 3. Save user data to Firestore (using uid as document ID)
+            // 3. Save user data to Firestore
+            // Only batch is marked public; everything else is stored securely.
             const userData = {
                 // Personal
                 fullName,
@@ -492,14 +575,15 @@
                 motherName,
                 dob,
                 gender,
-                photoURL,
+                photoURL, // may be "" if no photo
                 // School
-                batch,
+                schoolName: "Ramnagar N.B.P.C. High School", // fixed
+                studentId: studentId || null, // optional
+                batch, // ONLY PUBLIC FIELD
                 lastClass,
                 roll,
                 schoolReg,
                 section,
-                schoolName: "Ramnagar N.B.P.C. High School",
                 // Contact
                 email,
                 phone,
@@ -520,13 +604,14 @@
                 about,
                 // Meta
                 createdAt: serverTimestamp(),
-                uid: user.uid
+                uid: user.uid,
+                // Privacy flag
+                publicFields: ["batch"] // Only batch is visible publicly
             };
 
             await setDoc(doc(db, "alumni", user.uid), userData);
 
-            // 4. Sign out immediately after registration (optional; can leave logged in)
-            // We'll sign out so they proceed to login page. If you prefer to keep logged in, remove this line.
+            // 4. Sign out immediately after registration
             await signOut(auth);
 
             // Success feedback
@@ -536,7 +621,7 @@
             );
             submitBtn.textContent = "Registered ✓";
 
-            // Optionally redirect to login after a short delay
+            // Redirect to login after a short delay
             setTimeout(() => {
                 window.location.href = "login.html";
             }, 2500);
@@ -545,7 +630,6 @@
             console.error("Registration error:", error);
             let errorMsg = "Registration failed. ";
 
-            // Map Firebase Auth errors to friendly messages
             switch (error.code) {
                 case "auth/email-already-in-use":
                     errorMsg += "This email is already registered. Please log in instead.";
@@ -573,22 +657,6 @@
             submitBtn.textContent = "Submit Registration";
         }
     });
-
-    // Re-enable button if there are validation errors (handled above) — but since we return early,
-    // we need to re-enable manually for those cases. Let's wrap validation to re-enable.
-    // Better: move validation before disabling, but that would duplicate logic.
-    // Simpler: We can attach a listener to the form that re-enables the button on user input change.
-    // Or: use a flag to only disable after validation passes. Let's restructure slightly:
-    // Actually, we disable after all validation passes. So we're fine: on validation failure, we return
-    // *before* disabling. Good.
-    // But there's one issue: the form's submit event might be triggered by Enter key; that's fine.
-
-    // Also ensure that if there's any synchronous error before disabling, button stays enabled.
-    // All validation checks happen before disabling. Good.
-
-    // Note: We also need to handle the case where user reloads after a failed attempt - button
-    // will be re-enabled because we reset it in catch and also in validation failures (we never disabled it).
-    // Perfect.
 </script>
 
 </body>
