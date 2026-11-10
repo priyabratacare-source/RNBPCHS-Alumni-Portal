@@ -30,22 +30,9 @@
             z-index: 100;
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
+        .topbar .brand h1 { font-size: 18px; margin: 0; }
+        .topbar .brand span { font-size: 11px; color: #c5d9f0; margin-top: 2px; display: block; }
 
-        .topbar .brand {
-            display: flex;
-            flex-direction: column;
-        }
-        .topbar .brand h1 {
-            font-size: 18px;
-            margin: 0;
-        }
-        .topbar .brand span {
-            font-size: 11px;
-            color: #c5d9f0;
-            margin-top: 2px;
-        }
-
-        /* Hamburger (mobile) */
         .hamburger {
             display: none;
             background: none;
@@ -57,12 +44,7 @@
             line-height: 1;
         }
 
-        .topbar .user-area {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
+        .topbar .user-area { display: flex; align-items: center; gap: 10px; }
         .topbar .user-chip {
             display: flex;
             align-items: center;
@@ -74,21 +56,14 @@
             font-size: 13px;
         }
         .topbar .user-chip .avatar {
-            width: 30px;
-            height: 30px;
+            width: 30px; height: 30px;
             border-radius: 50%;
             background: #ffffff33;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 13px;
-            overflow: hidden;
-            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 13px;
+            overflow: hidden; flex-shrink: 0;
         }
-        .topbar .user-chip .avatar img {
-            width: 100%; height: 100%; object-fit: cover;
-        }
+        .topbar .user-chip .avatar img { width: 100%; height: 100%; object-fit: cover; }
 
         .topbar .logout-btn {
             background: transparent;
@@ -102,7 +77,7 @@
         }
         .topbar .logout-btn:hover { background: white; color: #244f85; }
 
-        /* ============ LAYOUT: SIDEBAR + MAIN ============ */
+        /* ============ LAYOUT ============ */
         .layout {
             display: flex;
             flex: 1;
@@ -113,7 +88,7 @@
             gap: 18px;
         }
 
-        /* ============ SIDEBAR MENU ============ */
+        /* ============ SIDEBAR ============ */
         .sidebar {
             width: 220px;
             flex-shrink: 0;
@@ -125,7 +100,6 @@
             position: sticky;
             top: 78px;
         }
-
         .sidebar .menu-label {
             font-size: 11px;
             font-weight: bold;
@@ -135,7 +109,6 @@
             padding: 0 18px;
             margin-bottom: 8px;
         }
-
         .sidebar .menu-item {
             display: flex;
             align-items: center;
@@ -154,10 +127,7 @@
             text-align: left;
             font-family: Arial, sans-serif;
         }
-        .sidebar .menu-item:hover {
-            background: #f5f8ff;
-            color: #244f85;
-        }
+        .sidebar .menu-item:hover { background: #f5f8ff; color: #244f85; }
         .sidebar .menu-item.active {
             background: #e8f0fe;
             color: #244f85;
@@ -171,15 +141,10 @@
             flex-shrink: 0;
         }
 
-        /* ============ MAIN CONTENT ============ */
-        .content {
-            flex: 1;
-            min-width: 0; /* prevent overflow */
-        }
-
+        /* ============ CONTENT ============ */
+        .content { flex: 1; min-width: 0; }
         .panel { display: none; }
         .panel.active { display: block; animation: fadeIn 0.2s ease; }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
@@ -194,7 +159,6 @@
             margin-bottom: 16px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
-
         .card h3 {
             color: #244f85;
             font-size: 16px;
@@ -222,7 +186,6 @@
             flex-shrink: 0;
         }
         .profile-hero .big-avatar img { width: 100%; height: 100%; object-fit: cover; }
-
         .profile-hero .info h2 { font-size: 21px; margin-bottom: 4px; }
         .profile-hero .info .badges {
             display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px;
@@ -237,6 +200,7 @@
         .badge.blue { background: #e3f2fd; color: #0d47a1; }
         .badge.green { background: #e8f5e9; color: #1b5e20; }
         .badge.orange { background: #fff8e1; color: #e65100; }
+        .badge.red { background: #fdecea; color: #b71c1c; }
         .badge.gray { background: #f0f0f0; color: #666; }
 
         .info-grid {
@@ -255,8 +219,10 @@
         }
         .info-item .val { font-size: 14px; color: #333; word-break: break-word; }
         .info-item .val.empty { color: #bbb; font-style: italic; }
+        .info-item .val a { color: #244f85; text-decoration: none; }
+        .info-item .val a:hover { text-decoration: underline; }
 
-        /* ============ STATS (Dashboard Home) ============ */
+        /* ============ STATS ============ */
         .stats-row {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -399,6 +365,10 @@
             display: block; background: #e8f5e9; color: #1b5e20;
             border: 1px solid #c8e6c9;
         }
+        .message.info {
+            display: block; background: #e3f2fd; color: #0d47a1;
+            border: 1px solid #bbdefb;
+        }
 
         /* ============ LOADER ============ */
         .loader {
@@ -426,14 +396,11 @@
         /* ============ RESPONSIVE ============ */
         @media (max-width: 820px) {
             .hamburger { display: block; }
-
             .layout { padding: 12px 10px 30px; flex-direction: column; gap: 0; }
-
             .sidebar {
                 width: 100%;
                 position: fixed;
-                top: 0; left: 0;
-                bottom: 0;
+                top: 0; left: 0; bottom: 0;
                 z-index: 200;
                 border-radius: 0;
                 padding-top: 18px;
@@ -442,7 +409,6 @@
                 overflow-y: auto;
             }
             .sidebar.open { transform: translateX(0); }
-
             .sidebar-overlay {
                 display: none;
                 position: fixed;
@@ -451,10 +417,8 @@
                 z-index: 199;
             }
             .sidebar-overlay.open { display: block; }
-
             .edit-grid { grid-template-columns: 1fr; }
         }
-
         @media (max-width: 520px) {
             .topbar { padding: 10px 14px; }
             .topbar .brand h1 { font-size: 15px; }
@@ -483,15 +447,12 @@
             <span>Reconnect · Remember · Reunite</span>
         </div>
     </div>
-
     <div class="user-area">
         <div class="user-chip" id="userChip" style="display:none;">
             <div class="avatar" id="headerAvatar">?</div>
             <span id="headerName">Loading...</span>
         </div>
-        <button type="button" class="logout-btn" id="logoutBtn" style="display:none;">
-            Logout
-        </button>
+        <button type="button" class="logout-btn" id="logoutBtn" style="display:none;">Logout</button>
     </div>
 </div>
 
@@ -504,7 +465,6 @@
     <!-- ============ SIDEBAR MENU ============ -->
     <aside class="sidebar" id="sidebar">
         <div class="menu-label">Menu</div>
-
         <button type="button" class="menu-item active" data-panel="home">
             <span class="ico">🏠</span> Dashboard Home
         </button>
@@ -517,9 +477,7 @@
         <button type="button" class="menu-item" data-panel="edit">
             <span class="ico">✏️</span> Edit Profile
         </button>
-
         <div class="menu-label" style="margin-top:18px;">Account</div>
-
         <button type="button" class="menu-item" data-panel="settings">
             <span class="ico">⚙️</span> Settings
         </button>
@@ -828,7 +786,7 @@
     RNBPCHS Alumni Portal · Made by Students – HS Batch 2026
 </footer>
 
-<!-- ============ FIREBASE SDK ============ -->
+<!-- ==================== FIREBASE + DASHBOARD LOGIC ==================== -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import {
@@ -842,6 +800,7 @@
         doc,
         getDoc,
         updateDoc,
+        setDoc,
         collection,
         getDocs,
         query,
@@ -849,6 +808,7 @@
         serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+    // ---- Firebase config ----
     const firebaseConfig = {
         apiKey: "AIzaSyAw-sqteTZyNoBIqHr-NTROz_BMmP6Yh7k",
         authDomain: "rnbpchs-alumni.firebaseapp.com",
@@ -862,17 +822,17 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // ---- DOM ----
-    const pageLoader = document.getElementById("pageLoader");
-    const userChip = document.getElementById("userChip");
-    const headerAvatar = document.getElementById("headerAvatar");
-    const headerName = document.getElementById("headerName");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const globalMessage = document.getElementById("globalMessage");
+    // ---- DOM refs ----
+    const pageLoader      = document.getElementById("pageLoader");
+    const userChip        = document.getElementById("userChip");
+    const headerAvatar    = document.getElementById("headerAvatar");
+    const headerName      = document.getElementById("headerName");
+    const logoutBtn       = document.getElementById("logoutBtn");
+    const globalMessage   = document.getElementById("globalMessage");
 
-    const sidebar = document.getElementById("sidebar");
-    const sidebarOverlay = document.getElementById("sidebarOverlay");
-    const hamburgerBtn = document.getElementById("hamburgerBtn");
+    const sidebar         = document.getElementById("sidebar");
+    const sidebarOverlay  = document.getElementById("sidebarOverlay");
+    const hamburgerBtn    = document.getElementById("hamburgerBtn");
 
     // ---- Helpers ----
     function initials(name) {
@@ -928,27 +888,21 @@
         eSel.innerHTML = '<option value="">Select Batch</option>';
         years.forEach(y => {
             const o = document.createElement("option");
-            o.value = y; o.text = y; eSel.appendChild(o);
+            o.value = String(y); o.text = String(y); eSel.appendChild(o);
         });
 
         const dSel = document.getElementById("dirBatchFilter");
         dSel.innerHTML = '<option value="">All Batches</option>';
         years.forEach(y => {
             const o = document.createElement("option");
-            o.value = y; o.text = y; dSel.appendChild(o);
+            o.value = String(y); o.text = String(y); dSel.appendChild(o);
         });
     }
     populateBatches();
 
-    // ---- Sidebar toggle (mobile) ----
-    function openSidebar() {
-        sidebar.classList.add("open");
-        sidebarOverlay.classList.add("open");
-    }
-    function closeSidebar() {
-        sidebar.classList.remove("open");
-        sidebarOverlay.classList.remove("open");
-    }
+    // ---- Sidebar toggle ----
+    function openSidebar() { sidebar.classList.add("open"); sidebarOverlay.classList.add("open"); }
+    function closeSidebar() { sidebar.classList.remove("open"); sidebarOverlay.classList.remove("open"); }
     hamburgerBtn.addEventListener("click", openSidebar);
     sidebarOverlay.addEventListener("click", closeSidebar);
 
@@ -957,14 +911,11 @@
         item.addEventListener("click", () => {
             const panel = item.dataset.panel;
             if (!panel) return;
-
             document.querySelectorAll(".menu-item").forEach(m => m.classList.remove("active"));
             item.classList.add("active");
-
             document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
             const target = document.getElementById("panel-" + panel);
             if (target) target.classList.add("active");
-
             closeSidebar();
             window.scrollTo({ top: 0, behavior: "smooth" });
         });
@@ -992,19 +943,19 @@
             userChip.style.display = "flex";
             logoutBtn.style.display = "inline-block";
 
-            // Render all panels
+            // Render panels
             renderHome();
             renderProfile();
             fillEditForm();
 
-            // Load directory in parallel
+            // Load directory
             await loadDirectory();
 
             pageLoader.classList.add("hidden");
         } catch (err) {
             console.error("Dashboard load error:", err);
             pageLoader.classList.add("hidden");
-            showGlobal("Failed to load your data. Please refresh.", "error");
+            showGlobal("Failed to load your data. Please refresh. (" + (err.code || err.message) + ")", "error");
         }
     });
 
@@ -1012,7 +963,6 @@
     function renderHome() {
         const p = profile;
 
-        // Stats
         document.getElementById("statBatch").textContent = p.batch || "—";
         document.getElementById("statStatus").textContent = (p.status || "approved").toUpperCase();
 
@@ -1022,7 +972,8 @@
         const statusBadge = document.getElementById("homeStatusBadge");
         const st = (p.status || "approved").toLowerCase();
         statusBadge.textContent = st.charAt(0).toUpperCase() + st.slice(1);
-        statusBadge.className = "badge " + (st === "approved" ? "green" : st === "pending" ? "orange" : "gray");
+        statusBadge.className = "badge " +
+            (st === "approved" ? "green" : st === "pending" ? "orange" : "red");
 
         document.getElementById("homeEmail").textContent = p.email || "—";
         document.getElementById("homePhone").textContent = p.phone || "—";
@@ -1169,6 +1120,20 @@
             await updateDoc(doc(db, "alumni", currentUser.uid), updates);
             profile = { ...profile, ...updates };
 
+            // Update public mirror
+            try {
+                await setDoc(doc(db, "alumni_public", currentUser.uid), {
+                    uid: currentUser.uid,
+                    fullName: updates.fullName,
+                    batch: updates.batch,
+                    photoURL: updates.photoURL,
+                    profession: updates.profession,
+                    currentStatus: updates.currentStatus
+                }, { merge: true });
+            } catch (pubErr) {
+                console.warn("Public mirror update failed:", pubErr);
+            }
+
             // Refresh
             headerName.textContent = updates.fullName;
             renderAvatar(headerAvatar, updates.photoURL, updates.fullName);
@@ -1179,7 +1144,7 @@
             showGlobal("Profile updated successfully!", "success");
         } catch (err) {
             console.error("Update error:", err);
-            showGlobal("Failed to save: " + (err.message || "Unknown error"), "error");
+            showGlobal("Failed to save: " + (err.code || err.message), "error");
         } finally {
             btn.disabled = false;
             btn.textContent = "Save Changes";
@@ -1192,7 +1157,15 @@
         const emptyEl = document.getElementById("dirEmpty");
 
         try {
-            const snap = await getDocs(query(collection(db, "alumni"), orderBy("batch", "desc")));
+            let snap;
+            try {
+                snap = await getDocs(query(collection(db, "alumni_public"), orderBy("batch", "desc")));
+            } catch (qErr) {
+                // Fallback if alumni_public is empty/missing
+                console.warn("alumni_public query failed, falling back to alumni collection:", qErr);
+                snap = await getDocs(collection(db, "alumni"));
+            }
+
             allAlumni = [];
             snap.forEach(d => {
                 const x = d.data();
@@ -1206,13 +1179,13 @@
                 });
             });
 
-            // Update home stats
+            // Stats
             document.getElementById("statTotalAlumni").textContent = allAlumni.length;
             const myBatch = profile.batch;
             const sameBatch = allAlumni.filter(a => String(a.batch) === String(myBatch) && a.uid !== currentUser.uid);
             document.getElementById("statYourBatchCount").textContent = sameBatch.length;
 
-            // Home: batch alumni
+            // Home batch alumni
             const homeGrid = document.getElementById("homeBatchAlumni");
             const homeEmpty = document.getElementById("homeBatchEmpty");
             if (sameBatch.length === 0) {
@@ -1226,7 +1199,7 @@
             applyFilters();
         } catch (err) {
             console.error("Directory error:", err);
-            grid.innerHTML = `<div class="empty-state">Unable to load directory.</div>`;
+            grid.innerHTML = `<div class="empty-state">Unable to load directory. (${esc(err.code || err.message)})</div>`;
             emptyEl.style.display = "none";
         }
     }
@@ -1285,11 +1258,10 @@
             showGlobal("Logout failed. Please try again.", "error");
         }
     }
-
     logoutBtn.addEventListener("click", doLogout);
     document.getElementById("logoutFromSettings").addEventListener("click", doLogout);
 
-    // ==================== PASSWORD RESET (from settings) ====================
+    // ==================== PASSWORD RESET ====================
     document.getElementById("sendResetFromDash").addEventListener("click", async function () {
         const email = currentUser.email;
         if (!email) { showGlobal("No email found for this account.", "error"); return; }
@@ -1303,7 +1275,7 @@
             showGlobal("Password reset email sent to " + email + ". Check your inbox.", "success");
         } catch (err) {
             console.error("Reset error:", err);
-            showGlobal("Could not send reset email: " + (err.message || "Try again later."), "error");
+            showGlobal("Could not send reset email: " + (err.code || err.message), "error");
         } finally {
             btn.disabled = false;
             btn.textContent = "Send Password Reset Email";
